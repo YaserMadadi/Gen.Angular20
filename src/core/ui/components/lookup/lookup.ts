@@ -1,3 +1,5 @@
+// Lookup Version 01
+
 import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -18,8 +20,6 @@ export class LookupComponent {
     @Input() valueField: string = '';
     @Input() emptyListMessage: string = 'رکوردی یافت نشد';
     @Input() label: string = 'Gender :';
-
-    //@Input() onSeekByValue!: (value: string) => Observable<any[]>;
 
 
     @Output() onSelected = new EventEmitter<any>();
