@@ -1,45 +1,6 @@
-<!--  Version 01 
-   Note the $event.stopPropagation()
+<!--  Version 01 -->
 
-<div class="lookup-wrapper"
-     (click)="$event.stopPropagation()">
-    <div id="genderLookup"
-         class="lookup-selected-item-container lookup-wrapper">
-        <button class="btn btn-default dropdown-toggle"
-                type="button"
-                (click)="toggleDropdown($event)">
-            {{ displayText }}
-            <span *ngIf="selectedItem"
-                  class="clear-button"
-                  (click)="clearSelection()">✕</span>
-        </button>
-    </div>
-    <div class="dropdown-panel"
-         *ngIf="showDropdown">
-        <input #filterInput
-               id="filterInput"
-               name="filterInput"
-               type="text"
-               [(ngModel)]="searchTerm"
-               (ngModelChange)="onFilterInputChanged()"
-               placeholder="Filter..."
-               width="97%"
-               class="filter-input form-control m-1" />
-        @if (items && items.length > 0) {
-        <ul class="dropdown-list">
-            <li *ngFor="let item of items"
-                (click)="selectItem(item)">
-                {{ item[textField] }}
-            </li>
-        </ul>
-        } @else {
-        <div class="dropdown-empty">{{ emptyListMessage }}</div>
-        }
-
-    </div>
-</div> -->
-
-<div class="l-wrapper"> <!-- Bootstrap margin-bottom spacing -->
+<div class="l-wrapper">
     <label for="genderLookup"
            class="label">{{ label }}</label>
 
@@ -55,9 +16,6 @@
                           class="clear-button ms-2"
                           (click)="clearSelection()">✕</span>
                 </span>
-
-
-
                 <i class="ms-2 bi bi-chevron-down"></i> <!-- Use your preferred icon here -->
             </button>
         </div>
@@ -71,7 +29,7 @@
                    (keydown)="onKeyDown($event)"
                    [(ngModel)]="searchTerm"
                    (ngModelChange)="onFilterInputChanged()"
-                   placeholder="Filter..."
+                   [placeholder]="filterPlaceHolder"
                    class="filter-input form-control m-1" />
 
 

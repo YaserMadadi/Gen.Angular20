@@ -35,6 +35,8 @@ export class LookupComponent {
     @Input() items!: any[];
     @Input() textField: string = '';
     @Input() valueField: string = '';
+    @Input() filterPlaceHolder: string = 'عبارت جستجو ...';
+    @Input() notSelectedItemMessage: string = 'لطفا یک رکورد انتخاب نمایید';
     @Input() emptyListMessage: string = 'رکوردی یافت نشد';
     @Input() label: string = 'عنوان :';
 
@@ -68,7 +70,7 @@ export class LookupComponent {
     private filterSubject = new Subject<string>();
 
     get displayText(): string {
-        return this.hasSelectedItem ? this.selectedItem[this.textField] : 'Select';
+        return this.hasSelectedItem ? this.selectedItem[this.textField] : this.notSelectedItemMessage;
     }
 
     get hasSelectedItem(): boolean {
@@ -97,11 +99,7 @@ export class LookupComponent {
     highlightedIndex = -1;
 
     onKeyDown(event: KeyboardEvent) {
-
-        console.log("Key Down Event: ", event.key);
-        //const items = this.itemsSig(); // assuming this is your signal for the filtered list
         if (this.items != null && this.items !== undefined && this.items.length === 0) return;
-        console.log("Key Down Event: ", event.key);
         switch (event.key) {
             case 'ArrowDown':
                 this.highlightedIndex = (this.highlightedIndex + 1) % this.items?.length;

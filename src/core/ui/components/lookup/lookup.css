@@ -49,6 +49,7 @@ button:focus:active {
 
 .filter-input {
     width: 98.6%;
+    font-size: 13px;
 }
 
 .dropdown-empty {
@@ -90,6 +91,10 @@ button:focus:active {
     margin-right: 15px;
 }
 
+.me-auto {
+    font-size: 13px;
+}
+
 .dropdown-list li:hover {
     background-color: #f0f0f0;
     /* Light gray or any color you prefer */
@@ -97,7 +102,7 @@ button:focus:active {
 }
 
 .lookup-item {
-    padding: 8px 12px;
+    padding: 6px 14px;
     border-bottom: 1px solid #eee;
 }
 
