@@ -1,0 +1,15 @@
+<div class="action-buttons">
+        <button class="btn btn-outline-primary  btn-sm"
+                [disabled]='!editButtonEnable'
+                *ngIf="editButtonVisible"
+                (click)="onEdit.emit()">{{ editButtonText }}</button>
+        <button class="btn btn-outline-danger btn-sm"
+                [disabled]='!deleteButtonEnable'
+                *ngIf="deleteButtonVisible"
+                (click)="onDelete.emit()">{{ deleteButtonText }}</button>
+        <button class="btn btn-default btn-sm"
+                [disabled]='!detailButtonEnable'
+                *ngIf="detailButtonVisible"
+                title="transfer to master details"
+                (click)='onNavigate()'>{{ detailButtonText }}</button>
+</div>

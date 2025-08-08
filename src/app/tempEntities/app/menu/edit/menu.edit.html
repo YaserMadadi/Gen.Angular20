@@ -1,0 +1,29 @@
+<!-- -->
+<app-modal #menuEditModal
+           [(Visible)]="modalVisible"
+           (onSave)='onSave(menuEditUI)'>
+  <form #menuEditUI='ngForm'
+        (ngSubmit)='onSave(menuEditUI)'>
+
+    <!--Menu.Title-->
+    <div class="form-floating mb-3">
+      <input #title
+             name="title"
+             type="text"
+             class="form-control"
+             [(ngModel)]="currentInstance.title" />
+      <label for="title">عنوان منو</label>
+    </div>
+
+    <div class="form-floating mb-3">
+      <textarea #firstName
+                id='firstName'
+                name='firstName'
+                class='form-control'
+                rows="3"
+                [(ngModel)]='currentInstance.title'></textarea>
+      <label for="floatingTextareaDisabled">توضیحات</label>
+    </div>
+
+  </form>
+</app-modal>

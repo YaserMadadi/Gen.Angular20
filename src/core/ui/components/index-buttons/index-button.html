@@ -1,0 +1,41 @@
+<div>
+    <p-button label='افزودن'
+              variant='outlined'
+              severity='info'
+              icon='pi pi-plus'
+              size='small'
+              class='m-1'
+              *ngIf='true'
+              (click)='addButtonClick.emit()' />
+    <!-- [disabled]='!addButtonEnabled' -->
+
+    <p-button label='ویرایش'
+              variant='outlined'
+              severity='success'
+              icon='pi pi-pen-to-square'
+              size='small'
+              class='m-1'
+              [disabled]='Id == 0'
+              *ngIf='editButtonVisibility'
+              (click)='editButtonClick.emit()' />
+
+
+    <p-button label='حذف'
+              variant='outlined'
+              severity='warn'
+              icon='pi pi-eraser'
+              size='small'
+              class='m-1'
+              *ngIf='deleteButtonVisibility'
+              [disabled]='Id == 0'
+              (click)='deleteButtonClick.emit()' />
+
+    <p-button label='بازیابی'
+              variant='outlined'
+              severity='warn'
+              icon='pi pi-eraser'
+              size='small'
+              class='m-1'
+              (click)='refreshButtonClick.emit()' />
+
+</div>

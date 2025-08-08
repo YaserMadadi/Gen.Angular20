@@ -1,0 +1,38 @@
+
+<!-- Edit Form of [App].[StudentCourse] -->
+<app-modal #modal
+           [(Visible)]='modalVisible'
+           [Header]='header("StudentCourse")'
+           (onClosed)='closed(false)'>
+    <form #studentCourseEditUI='ngForm'
+          (ngSubmit)='Save(studentCourseEditUI)' 
+          autocomplete='off'>
+        <div class='form-margin'>
+            <!-- Student -->
+        <div class="form-floating mb-3">
+            <!--  Lookup  -->
+            <label for="student">Student</label>
+        </div> 
+			<!-- Course -->
+        <div class="form-floating mb-3">
+            <!--  Lookup  -->
+            <label for="course">Course</label>
+        </div> 
+			<!-- TakenDate -->
+        <div class="form-floating mb-3">
+            <input #takenDate
+                   id='takenDate'
+                   name='takenDate'
+                   class='form-control'
+                   type='datetime'
+                   [(ngModel)]='currentInstance.takenDate' />
+            <label for="takenDate">Taken Date</label>
+        </div> 
+			
+        </div>
+    </form>
+    <edit-buttons actions
+                  (onSave)='Save(studentCourseEditUI)'
+                  (onCancle)='onClose(false)'>
+    </edit-buttons>
+</app-modal>

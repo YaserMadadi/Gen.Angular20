@@ -1,0 +1,25 @@
+<app-modal [title]="(staff.id ? 'Edit' : 'Add') + ' Staff'"
+           (close)="onClose.emit(false)"
+           (onSave)="onSubmit()">
+       <ng-container *ngIf="staff">
+              <div class="mb-3">
+                     <label for="firstName"
+                            class="form-label">First Name</label>
+                     <input id="firstName"
+                            class="form-control"
+                            name="firstName"
+                            [(ngModel)]="staff.firstName"
+                            placeholder="First Name">
+              </div>
+              <div class="mb-3">
+                     <label for="lastName"
+                            class="form-label">Last Name</label>
+                     <input id="lastName"
+                            class="form-control"
+                            name="lastName"
+                            [(ngModel)]="staff.lastName"
+                            placeholder="Last Name">
+              </div>
+       </ng-container>
+
+</app-modal>

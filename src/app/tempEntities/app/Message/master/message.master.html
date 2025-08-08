@@ -1,0 +1,45 @@
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Message</strong>
+                </div>
+                <div class="card-body">
+                    <div class="container">
+                        <presenter-textbox [title]='Message'>
+                            { currentInstance.userProfile_Id?.descriptor }
+                        </presenter-textbox>
+				<presenter-textbox [title]='Message'>
+                            { currentInstance.title }
+                        </presenter-textbox>
+				<presenter-textbox [title]='Message'>
+                            { currentInstance.message }
+                        </presenter-textbox>
+				<presenter-textbox [title]='Message'>
+                            { currentInstance.messageType_Id?.descriptor }
+                        </presenter-textbox>
+				<presenter-textbox [title]='Message'>
+                            { currentInstance.sendDate | date:'fullDate' }
+                        </presenter-textbox>
+				<presenter-textbox [title]='Message'>
+                            { currentInstance.viewDate | date:'fullDate' }
+                        </presenter-textbox>
+                    </div>
+                </div>
+                
+                <c-tabs [activeItemKey]="''"
+                        class="m-3 detail-tabs">
+                    <c-tabs-list variant="tabs">
+                        
+                    </c-tabs-list>
+                    <c-tabs-content>
+                        
+                    </c-tabs-content>
+                </c-tabs>
+            </div>
+        </div>
+    </div>
+</div>
+

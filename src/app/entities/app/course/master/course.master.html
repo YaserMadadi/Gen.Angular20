@@ -1,0 +1,42 @@
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Course</strong>
+                </div>
+                <div class="card-body">
+                    <div class="container">
+                        <presenter-textbox [title]="'Title'">
+                            {{ currentInstance.title }}
+                        </presenter-textbox>
+						<presenter-textbox [title]="'Credit'">
+                            {{ currentInstance.credit }}
+                        </presenter-textbox>
+						<presenter-textbox [title]="'Is Active'">
+                            {{ currentInstance.isActive | isActive }}
+                        </presenter-textbox>
+                    </div>
+                </div>
+                
+                <c-tabs [activeItemKey]="'studentCourse'"
+                        class="m-3 detail-tabs">
+                    <c-tabs-list variant="tabs">
+                        
+                        <button cTab
+                                itemKey="studentCourse">Student Course</button>
+                    </c-tabs-list>
+                    <c-tabs-content>
+                        
+                        <c-tab-panel class="p-3"
+                                     itemKey="studentCourse">
+                            <app-course-studentCourse-detail />
+                        </c-tab-panel>
+                    </c-tabs-content>
+                </c-tabs>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,35 @@
+<!-- Edit Form of [App].[Gender] -->
+<app-modal #modal
+           [(Visible)]='modalVisible'>
+    <form #genderEditUI='ngForm'
+          (ngSubmit)='Save(genderEditUI)'
+          autocomplete='off'>
+        <div class='form-margin'>
+            <!-- Title -->
+            <div class="form-floating mb-3">
+                <input #title
+                       id='title'
+                       name='title'
+                       class='form-control'
+                       type='text'
+                       [(ngModel)]='currentInstance.title' />
+                <label for="title">Title</label>
+            </div>
+            <!-- PreFix -->
+            <div class="form-floating mb-3">
+                <input #preFix
+                       id='preFix'
+                       name='preFix'
+                       class='form-control'
+                       type='text'
+                       [(ngModel)]='currentInstance.preFix' />
+                <label for="preFix">Pre Fix</label>
+            </div>
+
+        </div>
+    </form>
+    <edit-buttons action
+                  (onSave)='Save(genderEditUI)'
+                  (onCancle)='onClose()'>
+    </edit-buttons>
+</app-modal>

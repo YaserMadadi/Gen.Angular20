@@ -1,0 +1,29 @@
+
+<!-- Edit Form of [App].[MessageType] -->
+<app-modal #modal
+           [(Visible)]="modalVisible"
+           (onSave)='onSave()'>
+  <form #messageTypeEditUI='ngForm'
+        (ngSubmit)='onSave(currentInstance, messageTypeEditUI)' 
+        autocomplete='off'>
+    <div class='form-margin'>
+      <!-- Title -->
+      <div class='form-group'>
+        <guide (onClick)='onGuid("Title")'></guide>
+        <label for='title' class='col-form-label'>Title : </label>
+        <span class='help-block col-form-label' *ngIf='!title.valid && title.touched && !title.disabled'>{{ field_unvalid_message }}</span>
+        <input type='text' 
+                    title='System.Func`1[System.String]' 
+                    [ngClass]="{ 'error' : !title.valid && title.touched }" 
+                    class='form-control ' 
+                    #title='ngModel' 
+                    name='title' 
+                    placeholder='... System.Func`1[System.String]' 
+                    [(ngModel)]='currentInstance.title' 
+                    [disabled]='IsLocked'
+                    maxlength='100'  required  />
+      </div> 
+			
+    </div>
+  </form>
+</app-modal>

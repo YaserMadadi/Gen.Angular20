@@ -1,0 +1,53 @@
+<!-- Delete Form of [App].[Student] -->
+
+<app-modal #deleteModal
+           [(Visible)]="modalVisible">
+    <form #studentDeleteUI='ngForm'
+          (ngSubmit)='onDelete(studentDeleteUI)'>
+
+        <div class="form-floating mb-3">
+            <input #firstName
+                   id='firstName'
+                   name='firstName'
+                   class='form-control'
+                   type='text'
+                   readonly
+                   [(ngModel)]='currentInstance.firstName' />
+            <label for="firstName">First Name</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input #lastName
+                   id='lastName'
+                   name='lastName'
+                   class='form-control'
+                   type='text'
+                   readonly
+                   [(ngModel)]='currentInstance.lastName' />
+            <label for="lastName">Last Name</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input #gender_Id
+                   id='gender_Id'
+                   name='gender_Id'
+                   class='form-control'
+                   type='text'
+                   readonly
+                   [(ngModel)]='currentInstance.gender!.descriptor' />
+            <label for="gender_Id">Gender</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input #code
+                   id='code'
+                   name='code'
+                   class='form-control'
+                   type='text'
+                   readonly
+                   [(ngModel)]='currentInstance.code' />
+            <label for="code">Code</label>
+        </div>
+    </form>
+    <delete-buttons actions
+                    (onDelete)='onDelete(studentDeleteUI)'
+                    (onCancle)='onClose()'>
+    </delete-buttons>
+</app-modal>

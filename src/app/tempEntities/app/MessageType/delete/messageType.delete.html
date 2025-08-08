@@ -1,0 +1,27 @@
+
+<!---------------------------------------->
+<!-- Delete Form of [App].[MessageType] -->
+<!---------------------------------------->
+<XDialog [Header]='header' 
+    [IsShown]='IsShown' 
+    (OnClosed)='onCancel()'
+    [ModalType]='3'>
+    <div class='delete-frame'>
+        <p></p>
+        <p>{{ title_message }}</p>
+        <br>
+        <div class='margin20'>
+            
+            <div class='form-group row'>
+                <label class='col-sm-4 title-control'>Title : </label>
+                <label class='col-sm-8 value-control'>{{ currentInstance!.title }}</label>
+            </div>
+        </div>
+        <br>
+        <p>{{ confirmation_message }}</p>
+    </div>
+    <div class='modal-footer'>
+      <button class='xbtn btn-delete modal-footer-button' type='button' (click)='onDelete()'>{{ delete_button_title }}</button>
+      <button class='xbtn btn-edit modal-footer-button' type='button' (click)='onCancel()'>{{ cancle_button_title }}</button>
+    </div>
+</XDialog>

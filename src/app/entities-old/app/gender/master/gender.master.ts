@@ -1,0 +1,40 @@
+import { Component, inject } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { Tabs2Module } from '@coreui/angular';
+
+import { MasterUI } from '../../../../../core/ui/baseUI/MasterUI';
+import { IMasterUI } from '../../../../../core/ui/baseUI/masterUI.interface';
+import { MasterTrackerService } from '../../../../../core/service/uiService/master-tracker-service';
+import { PresenterTextBox } from '../../../../components/master/presenter-textbox/presenter-textbox';
+
+import { Gender } from '../gender';
+import { GenderService } from '../gender.service';
+import { GenderEditUI } from '../edit/gender.edit';
+import { GenderDeleteUI } from '../delete/gender.delete';
+import { Gender_Student_DetailUI } from '../detail/gender-student.detail';
+
+
+@Component({
+    selector: 'app-gender-master',
+    templateUrl: './gender.master.html',
+    styleUrls: ['./gender.master.scss'],
+    providers: [
+        MasterTrackerService
+    ],
+    imports: [
+        Tabs2Module,
+        CommonModule,
+        PresenterTextBox,
+        GenderEditUI,        
+        GenderDeleteUI,
+        Gender_Student_DetailUI
+    ]
+})
+export class GenderMasterUI extends MasterUI<Gender> implements IMasterUI<Gender> {
+
+  constructor() {
+    super(inject(GenderService), inject(MasterTrackerService))
+  }
+
+
+}

@@ -1,0 +1,53 @@
+
+<div class='row'>
+    <div class='col-12'>
+        <div class='card'>
+            <div class='card-header'>
+                <strong>مدیریت منو</strong>
+            </div>
+            <div class='card-body'>
+                <index-button [addButtonVisibility]='true'
+                              [editButtonVisibility]='true'
+                              [deleteButtonVisibility]='true'
+                              (addButtonClick)='addRecord(menuEditUI)'
+                              (editButtonClick)='editRecord(menuEditUI)'
+                              (deleteButtonClick)='deleteRecord(menuDeleteUI)' />
+                <hr>
+                <seek-bar (onSeeking)='onSeek($event)' />
+                <hr>
+
+                <table class='table table-striped table-hover'>
+                    <thead>
+                        <tr>
+                            <th>عنوان</th>
+                            <th>آیکون</th>
+                            <th>آدرس</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for(message of list$ | async; track message; let i = $index) {
+                            <tr (onSelect(message)
+                                [class.selected]='currentInstance.id == message.id'
+                                class='table-row-hover'>
+                                <td class='row-number'>{ i+1 }</td>
+		<td>{{ message.userProfile_Id?.descriptor }}</td>
+		<td>{{ message.title }}</td>
+		<td>{{ message.message }}</td>
+		<td>{{ message.messageType_Id?.descriptor }}</td>
+		<td>{{ message.sendDate | date:'fullDate' }}</td>
+		<td>{{ message.viewDate | date:'fullDate' }}</td><td>
+                                <row-buttons (onEdit)='editRecord(messageEditUI)'
+                                             (onDelete)='deleteRecord(messageDeleteUI)' />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<message-edit #messageEditUI/>
+<message-delete #messageDeleteUI/>

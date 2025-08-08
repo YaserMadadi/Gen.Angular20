@@ -1,0 +1,15 @@
+<app-modal #menuDeleteModal
+           [(Visible)]="modalVisible">
+    <form #menuEditUI='ngForm'
+          (ngSubmit)='onDelete()'>
+
+        <!--  Menu.Title  -->
+        <div class="form-floating mb-3">
+            <label>{{ currentInstance.title }}</label>
+            <label>عنوان منو</label>
+        </div>
+
+
+
+    </form>
+</app-modal>

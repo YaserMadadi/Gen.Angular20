@@ -1,0 +1,27 @@
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Student Course</strong>
+                </div>
+                <div class="card-body">
+                    <div class="container">
+                        <presenter-textbox [title]="'Student'">
+                            {{ currentInstance.student?.descriptor }}
+                        </presenter-textbox>
+						<presenter-textbox [title]="'Course'">
+                            {{ currentInstance.course?.descriptor }}
+                        </presenter-textbox>
+						<presenter-textbox [title]="'Taken Date'">
+                            {{ currentInstance.takenDate | date:'fullDate' }}
+                        </presenter-textbox>
+                    </div>
+                </div>
+                <!-- // there is no detail tab -->
+            </div>
+        </div>
+    </div>
+</div>
+

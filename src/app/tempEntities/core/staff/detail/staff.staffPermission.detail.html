@@ -1,0 +1,28 @@
+<div class="card text-center">
+    <div class="card-body">
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>مشخصات رکورد مجوز</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let staffPermission of list$ | async; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ staffPermission.add }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer text-body-secondary">
+        <detail-buttons class="text-end"
+                        (addButtonClick)="onAddButtonClick(staffEditUI)"
+                        (editButtonClick)="onEditButtonClick(staffEditUI)"
+                        (deleteButtonClick)="onDeleteButtonClick(staffDeleteUI)">
+        </detail-buttons>
+    </div>
+</div>
+
+<staff-edit #staffEditUI />
+<staff-delete #staffDeleteUI />

@@ -1,0 +1,20 @@
+<div class="">
+    <button class="btn btn-outline-success mt-2 m-1 btn-sm"
+            (click)="addButtonClick.emit()"
+            [disabled]="!addButtonVisibility">
+        <!-- <i class="cil-medical-cross icon"></i> -->
+        افزودن
+    </button>
+    <button class="btn btn-outline-dark mt-2 m-1 btn-sm"
+            (click)="editButtonClick.emit()"
+            [disabled]="!editButtonVisibility">
+        <!-- <i class="cil-medical-cross icon"></i> -->
+        ویرایش
+    </button>
+    <button class="btn btn-outline-danger mt-2 m-1 btn-sm"
+            (click)="deleteButtonClick.emit()"
+            [disabled]="!deleteButtonVisibility">
+        <!-- <i class="cil-medical-cross icon"></i> -->
+        حذف
+    </button>
+</div>

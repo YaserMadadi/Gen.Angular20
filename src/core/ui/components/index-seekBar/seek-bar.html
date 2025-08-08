@@ -1,0 +1,20 @@
+<div class="row col-3 mb-3">
+    <div class="input-group">
+        <span class="input-group-text">
+            <i class="bi bi-search"></i> <!-- Bootstrap Icons -->
+        </span>
+        <input type="text"
+               #searchInput
+               class="form-control"
+               (input)="onSeek($event.target.value)"
+               placeholder="جستجو">
+        <button class="btn btn-outline-secondary"
+                type="button"
+                id="button-addon1"
+                data-bs-container="body"
+                data-bs-toggle="popover"
+                data-bs-placement="top"
+                title="شرط شروع جستجو"
+                [attr.data-bs-content]='contentMessage'><i class="bi bi-question-square bi-xl"></i></button>
+    </div>
+</div>

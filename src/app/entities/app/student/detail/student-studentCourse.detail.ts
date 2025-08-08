@@ -1,0 +1,47 @@
+
+import { Component, inject } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { Observable, of } from "rxjs";
+
+import { DetailUI } from "../../../../../core/ui/baseUI/detailUI";
+import { DetailButton } from "../../../../../core/ui/components/detail-buttons/detail-button";
+import { MasterTrackerService } from "../../../../../core/service/uiService/master-tracker-service";
+
+import { Student } from '../student';
+import { StudentCourse } from '../../studentCourse/studentCourse';
+import { StudentCourseService } from '../../studentCourse/studentCourse.service';
+import { StudentServiceCollection } from '../../student/student.service.collection';
+
+import { StudentCourseEditUI } from '../../studentCourse/edit/studentCourse.edit';
+import { StudentCourseDeleteUI } from '../../studentCourse/delete/studentCourse.delete';
+
+
+
+@Component({
+    selector: 'app-student-studentCourse-detail',
+    templateUrl: './student-studentCourse.detail.html',
+    styleUrls: [
+        './student-studentCourse.detail.scss'
+    ],
+    imports: [
+        CommonModule,
+        DetailButton,
+        StudentCourseEditUI,
+        StudentCourseDeleteUI,
+
+    ]
+})
+export class Student_StudentCourse_DetailUI extends DetailUI<Student, StudentCourse> {
+
+    protected serviceCollection: StudentServiceCollection;
+
+    constructor() {
+        super(inject(MasterTrackerService));
+        this.serviceCollection = inject(StudentServiceCollection);
+    }
+
+    override onReload() {
+        this.list$ = this.serviceCollection.CollectionOfStudentCourse(this.masterId);
+    }
+
+}

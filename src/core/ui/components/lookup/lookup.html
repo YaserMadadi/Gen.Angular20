@@ -1,0 +1,90 @@
+<!-- Note the $event.stopPropagation()
+
+<div class="lookup-wrapper"
+     (click)="$event.stopPropagation()">
+    <div id="genderLookup"
+         class="lookup-selected-item-container lookup-wrapper">
+        <button class="btn btn-default dropdown-toggle"
+                type="button"
+                (click)="toggleDropdown($event)">
+            {{ displayText }}
+            <span *ngIf="selectedItem"
+                  class="clear-button"
+                  (click)="clearSelection()">✕</span>
+        </button>
+    </div>
+    <div class="dropdown-panel"
+         *ngIf="showDropdown">
+        <input #filterInput
+               id="filterInput"
+               name="filterInput"
+               type="text"
+               [(ngModel)]="searchTerm"
+               (ngModelChange)="onFilterInputChanged()"
+               placeholder="Filter..."
+               width="97%"
+               class="filter-input form-control m-1" />
+        @if (items && items.length > 0) {
+        <ul class="dropdown-list">
+            <li *ngFor="let item of items"
+                (click)="selectItem(item)">
+                {{ item[textField] }}
+            </li>
+        </ul>
+        } @else {
+        <div class="dropdown-empty">{{ emptyListMessage }}</div>
+        }
+
+    </div>
+</div> -->
+
+<div class="l-wrapper"> <!-- Bootstrap margin-bottom spacing -->
+    <label for="genderLookup"
+           class="label">{{ label }}</label>
+
+    <div class="lookup-wrapper"
+         (click)="$event.stopPropagation()">
+        <div id="genderLookup"
+             class="lookup-selected-item-container lookup-wrapper">
+            <button class="btn btn-default  d-flex justify-content-between align-items-center w-100"
+                    type="button"
+                    (click)="toggleDropdown($event)">
+                <span class="me-auto">{{ displayText }}
+                    <span *ngIf="selectedItem"
+                          class="clear-button ms-2"
+                          (click)="clearSelection()">✕</span>
+                </span>
+
+
+
+                <i class="ms-2 bi bi-chevron-down"></i> <!-- Use your preferred icon here -->
+            </button>
+        </div>
+
+        <div class="dropdown-panel"
+             *ngIf="showDropdown">
+            <input #filterInput
+                   id="filterInput"
+                   name="filterInput"
+                   type="text"
+                   [(ngModel)]="searchTerm"
+                   (ngModelChange)="onFilterInputChanged()"
+                   placeholder="Filter..."
+                   class="filter-input form-control m-1" />
+
+
+            @if (items && items.length > 0) {
+            <div class="lookup-list">
+                @for (item of items; track item.id) {
+                <div class="lookup-item"
+                     (click)="selectItem(item)">
+                    {{ item[textField] }}
+                </div>
+                }
+            </div>
+            } @else {
+            <div class="dropdown-empty">{{ emptyListMessage }}</div>
+            }
+        </div>
+    </div>
+</div>

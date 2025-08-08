@@ -1,0 +1,47 @@
+
+<!---------------------------------------->
+<!-- Delete Form of [App].[Message] -->
+<!---------------------------------------->
+<XDialog [Header]='header' 
+    [IsShown]='IsShown' 
+    (OnClosed)='onCancel()'
+    [ModalType]='3'>
+    <div class='delete-frame'>
+        <p></p>
+        <p>{{ title_message }}</p>
+        <br>
+        <div class='margin20'>
+            
+            <div class='form-group row'>
+                <label class='col-sm-4 title-control'>User Profile : </label>
+                <label class='col-sm-8 value-control'>{{ currentInstance!.userProfile_Id!.descriptor }}</label>
+            </div>
+            <div class='form-group row'>
+                <label class='col-sm-4 title-control'>Title : </label>
+                <label class='col-sm-8 value-control'>{{ currentInstance!.title }}</label>
+            </div>
+            <div class='form-group row'>
+                <label class='col-sm-4 title-control'>Message : </label>
+                <label class='col-sm-8 value-control'>{{ currentInstance!.message }}</label>
+            </div>
+            <div class='form-group row'>
+                <label class='col-sm-4 title-control'>Message Type : </label>
+                <label class='col-sm-8 value-control'>{{ currentInstance!.messageType_Id!.descriptor }}</label>
+            </div>
+            <div class='form-group row'>
+                <label class='col-sm-4 title-control'>Send Date : </label>
+                <label class='col-sm-8 value-control'>{{ currentInstance!.sendDate | date:'fullDate' }}</label>
+            </div>
+            <div class='form-group row'>
+                <label class='col-sm-4 title-control'>View Date : </label>
+                <label class='col-sm-8 value-control'>{{ currentInstance!.viewDate | date:'fullDate' }}</label>
+            </div>
+        </div>
+        <br>
+        <p>{{ confirmation_message }}</p>
+    </div>
+    <div class='modal-footer'>
+      <button class='xbtn btn-delete modal-footer-button' type='button' (click)='onDelete()'>{{ delete_button_title }}</button>
+      <button class='xbtn btn-edit modal-footer-button' type='button' (click)='onCancel()'>{{ cancle_button_title }}</button>
+    </div>
+</XDialog>

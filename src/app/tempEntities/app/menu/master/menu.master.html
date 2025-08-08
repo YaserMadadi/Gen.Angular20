@@ -1,0 +1,66 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong>مشخصات منوی انتخابی</strong>
+                </div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="row m-4">
+                            <div class="col-3 text-end">
+                                عنوان :
+                            </div>
+                            <div class="col-9">
+                                {{ menu.title }}
+                            </div>
+                        </div>
+                        <div class="row m-4">
+                            <div class="col-3 text-end">
+                                مسیر :
+                            </div>
+                            <div class="col-9">
+                                {{ menu.url }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <c-tabs [activeItemKey]="'profile'"
+                        (activeItemKeyChange)="handleChange($event)"
+                        class="m-3"
+                        style="min-height: 400px;">
+                    <c-tabs-list variant="tabs">
+                        <button cTab
+                                itemKey="home"> نخست</button>
+                        <button cTab
+                                itemKey="profile">پروفایل</button>
+                        <button cTab
+                                itemKey="contact">تماس با ما</button>
+                        <button cTab
+                                itemKey="disabled"
+                                disabled>Disabled</button>
+                    </c-tabs-list>
+                    <c-tabs-content>
+                        <c-tab-panel class="p-3"
+                                     itemKey="home">
+                            برگه نخستین
+                        </c-tab-panel>
+                        <c-tab-panel class="p-3"
+                                     itemKey="profile">
+                            برگه پروفایل
+                            <p>محتوای برگه پروفایل در اینجا قرار دارد</p>
+                        </c-tab-panel>
+                        <c-tab-panel class="p-3"
+                                     itemKey="contact">
+                            <strong>Contact</strong> tab contents are here
+                        </c-tab-panel>
+                        <c-tab-panel class="p-3"
+                                     itemKey="disabled">
+                            <strong>Disabled</strong> tab contents are hereasdasdasd
+                        </c-tab-panel>
+                    </c-tabs-content>
+                </c-tabs>
+            </div>
+        </div>
+    </div>
+</div>

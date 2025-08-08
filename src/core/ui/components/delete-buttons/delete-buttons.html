@@ -1,0 +1,10 @@
+<p-button [label]='deleteButtonTitle'
+          [outlined]='true'
+          severity='danger'
+          class='m-1'
+          type='submit'
+          (click)='onDeleteClick()' />
+<p-button [label]='cancleButtonTitle'
+          severity='secondary'
+          class='m-1'
+          (click)='onCancle.emit();' />
