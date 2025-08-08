@@ -51,7 +51,7 @@
                     type="button"
                     (click)="toggleDropdown($event)">
                 <span class="me-auto">{{ displayText }}
-                    <span *ngIf="selectedItem"
+                    <span *ngIf="hasSelectedItem"
                           class="clear-button ms-2"
                           (click)="clearSelection()">✕</span>
                 </span>
@@ -68,6 +68,7 @@
                    id="filterInput"
                    name="filterInput"
                    type="text"
+                   (keydown)="onKeyDown($event)"
                    [(ngModel)]="searchTerm"
                    (ngModelChange)="onFilterInputChanged()"
                    placeholder="Filter..."
@@ -76,8 +77,9 @@
 
             @if (items && items.length > 0) {
             <div class="lookup-list">
-                @for (item of items; track item.id) {
+                @for (item of items; track item.id; let i = $index) {
                 <div class="lookup-item"
+                     [class.lookup-item-hover]="highlightedIndex === i"
                      (click)="selectItem(item)">
                     {{ item[textField] }}
                 </div>

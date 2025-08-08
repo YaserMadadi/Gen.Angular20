@@ -1,9 +1,26 @@
 // Lookup Version 01
-
-import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+//#region Imports
 import { FormsModule } from '@angular/forms';
-import { Observable, Subject, debounceTime, distinctUntilChanged, filter, map, tap } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import {
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+    ViewChild,
+    ElementRef,
+    DoCheck
+} from '@angular/core';
+import {
+    Subject,
+    debounceTime,
+    distinctUntilChanged,
+    filter,
+    map,
+    tap
+} from 'rxjs';
+import { BaseEntity } from '../../../BaseEntity';
+//#endregion
 
 @Component({
     selector: 'lookup',
@@ -15,12 +32,25 @@ import { Observable, Subject, debounceTime, distinctUntilChanged, filter, map, t
     ]
 })
 export class LookupComponent {
-    @Input() items: any[] | null = [];
+    @Input() items!: any[];
     @Input() textField: string = '';
     @Input() valueField: string = '';
     @Input() emptyListMessage: string = 'رکوردی یافت نشد';
-    @Input() label: string = 'Gender :';
+    @Input() label: string = 'عنوان :';
 
+    @Input() set selectedItem(value: any) {
+        this._selectedItem = value;
+        this.selectedItemChange.emit(value);
+        this.onSelected.emit(value);
+    }
+
+    get selectedItem(): any {
+        return this._selectedItem;
+    }
+
+    private _selectedItem: any;
+
+    @Output() selectedItemChange = new EventEmitter<any>();
 
     @Output() onSelected = new EventEmitter<any>();
     @Output() onSeek = new EventEmitter<string>();
@@ -32,16 +62,21 @@ export class LookupComponent {
     }
 
     searchTerm = '';
-    selectedItem: any = null;
+    //selectedItem: any = null;
     showDropdown = false;
 
     private filterSubject = new Subject<string>();
 
     get displayText(): string {
-        return this.selectedItem ? this.selectedItem[this.textField] : 'Select';
+        return this.hasSelectedItem ? this.selectedItem[this.textField] : 'Select';
+    }
+
+    get hasSelectedItem(): boolean {
+        return BaseEntity.Confirm(this.selectedItem);
     }
 
     constructor() {
+        this.items = [];
         this.filterSubject.pipe(
             debounceTime(300),
             map((v) => v?.trim()),
@@ -59,9 +94,37 @@ export class LookupComponent {
         this.filterSubject.next(this.searchTerm);
     }
 
+    highlightedIndex = -1;
+
+    onKeyDown(event: KeyboardEvent) {
+
+        console.log("Key Down Event: ", event.key);
+        //const items = this.itemsSig(); // assuming this is your signal for the filtered list
+        if (this.items != null && this.items !== undefined && this.items.length === 0) return;
+        console.log("Key Down Event: ", event.key);
+        switch (event.key) {
+            case 'ArrowDown':
+                this.highlightedIndex = (this.highlightedIndex + 1) % this.items?.length;
+                event.preventDefault();
+                break;
+            case 'ArrowUp':
+                this.highlightedIndex =
+                    (this.highlightedIndex - 1 + this.items.length) % this.items.length;
+                event.preventDefault();
+                break;
+            case 'Enter':
+                if (this.highlightedIndex >= 0 && this.items[this.highlightedIndex]) {
+                    this.selectItem(this.items[this.highlightedIndex]);
+                }
+                break;
+            // case 'Escape':
+            //     this.closeDropdown();
+            //     break;
+        }
+    }
+
     selectItem(item: any) {
         this.selectedItem = item;
-        this.onSelected.emit(item);
         this.showDropdown = false;
         this.searchTerm = '';
     }
@@ -75,6 +138,10 @@ export class LookupComponent {
             this.searchTerm = '';
             this.onSeek.emit('');
         }
+    }
+
+    closeDropdown() {
+        this.showDropdown = false;
     }
 
     clearSelection() {

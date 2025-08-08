@@ -105,3 +105,8 @@ button:focus:active {
     background-color: #f13d3d;
     color: white;
 }
+
+.lookup-item-hover {
+    background-color: #f13d3d;
+    color: white;
+}
