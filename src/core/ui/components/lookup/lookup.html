@@ -1,12 +1,13 @@
 <!--  Version 01 -->
 
 <div class="l-wrapper">
-    <label for="genderLookup"
+    <label for="lookup-body"
+           [style.display]="hasLabel() ? 'block' : 'none'"
            class="label">{{ label }}</label>
 
     <div class="lookup-wrapper"
          (click)="$event.stopPropagation()">
-        <div id="genderLookup"
+        <div id="lookup-body"
              class="lookup-selected-item-container lookup-wrapper">
             <button class="btn btn-default  d-flex justify-content-between align-items-center w-100"
                     type="button"
@@ -23,6 +24,7 @@
         <div class="dropdown-panel"
              *ngIf="showDropdown">
             <input #filterInput
+                   [style.display]="filterable ? 'block' : 'none'"
                    id="filterInput"
                    name="filterInput"
                    type="text"
@@ -34,11 +36,12 @@
 
 
             @if (items && items.length > 0) {
-            <div class="lookup-list">
+            <div class="lookup-list"
+                 (keydown)='onKeyDown($event)'>
                 @for (item of items; track item.id; let i = $index) {
                 <div class="lookup-item"
-                     [class.lookup-item-hover]="highlightedIndex === i"
-                     (click)="selectItem(item)">
+                     [class.lookup-item-hover]="highlightedIndex == i"
+                     (click)="onSelectItem(item)">
                     {{ item[textField] }}
                 </div>
                 }

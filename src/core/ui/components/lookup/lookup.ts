@@ -1,6 +1,6 @@
 // Lookup Version 01
 //#region Imports
-import { FormsModule } from '@angular/forms';
+import { AbstractControl, ControlValueAccessor, FormsModule, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {
     Component,
@@ -9,7 +9,9 @@ import {
     EventEmitter,
     ViewChild,
     ElementRef,
-    DoCheck
+    DoCheck,
+    forwardRef,
+    SimpleChanges
 } from '@angular/core';
 import {
     Subject,
@@ -20,62 +22,34 @@ import {
     tap
 } from 'rxjs';
 import { BaseEntity } from '../../../BaseEntity';
+import { Base } from 'primeng/base';
 //#endregion
 
 @Component({
     selector: 'lookup',
     templateUrl: './lookup.html',
     styleUrls: ['./lookup.css'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => LookupComponent),
+            multi: true
+        },
+        {
+            provide: NG_VALIDATORS,
+            useExisting: forwardRef(() => LookupComponent),
+            multi: true
+        }
+    ],
     imports: [
         FormsModule,
         CommonModule
     ]
 })
-export class LookupComponent {
-    @Input() items!: any[];
-    @Input() textField: string = '';
-    @Input() valueField: string = '';
-    @Input() filterPlaceHolder: string = 'عبارت جستجو ...';
-    @Input() notSelectedItemMessage: string = 'لطفا یک رکورد انتخاب نمایید';
-    @Input() emptyListMessage: string = 'رکوردی یافت نشد';
-    @Input() label: string = 'عنوان :';
-
-    @Input() set selectedItem(value: any) {
-        this._selectedItem = value;
-        this.selectedItemChange.emit(value);
-        this.onSelected.emit(value);
-    }
-
-    get selectedItem(): any {
-        return this._selectedItem;
-    }
-
-    private _selectedItem: any;
-
-    @Output() selectedItemChange = new EventEmitter<any>();
-
-    @Output() onSelected = new EventEmitter<any>();
-    @Output() onSeek = new EventEmitter<string>();
-
-    @ViewChild('filterInput') set filterInputSetter(el: ElementRef<HTMLInputElement>) {
-        if (el) {
-            queueMicrotask(() => el.nativeElement.focus());
-        }
-    }
-
-    searchTerm = '';
-    //selectedItem: any = null;
-    showDropdown = false;
-
+export class LookupComponent implements ControlValueAccessor, Validator {
     private filterSubject = new Subject<string>();
 
-    get displayText(): string {
-        return this.hasSelectedItem ? this.selectedItem[this.textField] : this.notSelectedItemMessage;
-    }
-
-    get hasSelectedItem(): boolean {
-        return BaseEntity.Confirm(this.selectedItem);
-    }
+    private selectedItemSubject = new Subject<BaseEntity | undefined>();
 
     constructor() {
         this.items = [];
@@ -85,10 +59,23 @@ export class LookupComponent {
             tap((v) => {
                 //if (!v) this.items = []
             }),
-            filter((v) => !!v),
+            filter((v) => v.length >= 2),
             distinctUntilChanged()
         ).subscribe(term => {
             this.onSeek.emit(term);
+        });
+
+        this.selectedItemSubject.pipe(
+            debounceTime(100),
+            //filter((v) => v.),
+            distinctUntilChanged()
+        ).subscribe(item => {
+            this.selectedItemChange.emit(item);
+            // if (item instanceof BaseEntity && item.id <= 0) {
+            //     this.selectedItemChange.emit(item);
+            // } else {
+            //     this.selectedItemChange.emit(item);
+            // }
         });
     }
 
@@ -96,13 +83,143 @@ export class LookupComponent {
         this.filterSubject.next(this.searchTerm);
     }
 
+
+    @Input() items: any[] | null = [];
+    @Input() textField: string = '';
+    @Input() valueField: string = '';
+    @Input() filterPlaceHolder: string = 'عبارت جستجو ...';
+    @Input() notSelectedItemMessage: string = 'لطفا یک رکورد انتخاب نمایید';
+    @Input() emptyListMessage: string = 'رکوردی یافت نشد';
+    @Input() label: string = '';
+    @Input() required: boolean | string = false;
+    @Input() filterable: boolean = false;
+
+    public hasLabel(): boolean {
+        return this.label.trim().length > 0;
+    }
+
+    //#region   twoway binding for SelectedItem
+    private _selectedItem: any;
+
+    @Input() set selectedItem(value: any) {
+        this._selectedItem = value;
+        this.selectedItemSubject.next(value);
+        if (!this.filterable) {
+            return;
+        }
+        if (value instanceof BaseEntity && value.id <= 0) {
+            this.searchTerm = '';
+            this.items = [];
+        } else {
+            this.items = [value];
+        }
+    }
+
+    get selectedItem(): any {
+        return this._selectedItem;
+    }
+
+    @Output() selectedItemChange = new EventEmitter<any>();
+    //#endregion    twoway binding for SelectedItem
+
+    @Output() onSeek = new EventEmitter<string>();
+    @Output() onOpen = new EventEmitter<boolean>();
+
+    //#region   required and [(ngModel)] validation
+    // --- ControlValueAccessor ---
+    private _onChange: (v: any) => void = () => { };
+    private _onTouched: () => void = () => { };
+
+    // Validator change notifier
+    private _onValidatorChange: (() => void) | null = null;
+
+    // ngModel → component
+    writeValue(value: any): void {
+        this.selectedItem = value;
+    }
+
+    // component → ngModel
+    registerOnChange(fn: any): void {
+        this._onChange = fn;
+    }
+
+    registerOnTouched(fn: any): void {
+        this._onTouched = fn;
+    }
+
+    setDisabledState?(isDisabled: boolean): void {
+        // implement if you want to disable the component UI
+    }
+
+    // --- Validator ---
+    validate(control: AbstractControl): ValidationErrors | null {
+        if (this.isRequired()) {
+            // decide what "empty" means for your lookup: null/''/undefined => invalid
+            const empty =
+                this.selectedItem === null ||
+                this.selectedItem === undefined ||
+                BaseEntity.Confirm(this.selectedItem) === false;
+            return empty ? { required: true } : null;
+        }
+        return null;
+    }
+
+    registerOnValidatorChange?(fn: () => void): void {
+        this._onValidatorChange = fn;
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['required'] && this._onValidatorChange) {
+            // notify Angular that validation rules changed
+            this._onValidatorChange();
+        }
+    }
+
+    // helper for boolean coercion of required attribute (handles required="" case)
+    private isRequired(): boolean {
+        return (
+            this.required === '' ||
+            this.required === true ||
+            this.required === 'true' ||
+            this.required === 'required'
+        );
+    }
+
+    //#endregion
+
+    @ViewChild('filterInput', { static: true })
+    filterInput!: ElementRef<HTMLInputElement>;
+
+    focusInput() {
+        if (this.filterInput) {
+            this.filterInput.nativeElement.focus();
+        }
+    }
+
+    searchTerm = '';
+    //selectedItem: any = null;
+    showDropdown = false;
+
+
+
+    get displayText(): string {
+        return this.hasSelectedItem ? this.selectedItem[this.textField] : this.notSelectedItemMessage;
+    }
+
+    get hasSelectedItem(): boolean {
+        return BaseEntity.Confirm(this.selectedItem);
+    }
+
+
+
     highlightedIndex = -1;
 
     onKeyDown(event: KeyboardEvent) {
-        if (this.items != null && this.items !== undefined && this.items.length === 0) return;
+        console.log('Key down event:', event);
+        if (this.items == null || this.items.length === 0) return;
         switch (event.key) {
             case 'ArrowDown':
-                this.highlightedIndex = (this.highlightedIndex + 1) % this.items?.length;
+                this.highlightedIndex = (this.highlightedIndex + 1) % this.items.length;
                 event.preventDefault();
                 break;
             case 'ArrowUp':
@@ -112,19 +229,23 @@ export class LookupComponent {
                 break;
             case 'Enter':
                 if (this.highlightedIndex >= 0 && this.items[this.highlightedIndex]) {
-                    this.selectItem(this.items[this.highlightedIndex]);
+                    this.onSelectItem(this.items[this.highlightedIndex]);
                 }
                 break;
-            // case 'Escape':
-            //     this.closeDropdown();
-            //     break;
+            case 'Escape':
+                this.closeDropdown();
+                break;
         }
     }
 
-    selectItem(item: any) {
+    onSelectItem(item: any) {
         this.selectedItem = item;
         this.showDropdown = false;
         this.searchTerm = '';
+        this._onChange(this.selectedItem);
+        this._onTouched();
+        if (this._onValidatorChange) this._onValidatorChange();
+
     }
 
     toggleDropdown(event?: MouseEvent) {
@@ -134,7 +255,9 @@ export class LookupComponent {
         this.showDropdown = !this.showDropdown;
         if (this.showDropdown) {
             this.searchTerm = '';
-            this.onSeek.emit('');
+            this.focusInput();
+            this.onOpen.emit(true);
+            //this.onSeek.emit('');
         }
     }
 
@@ -143,9 +266,10 @@ export class LookupComponent {
     }
 
     clearSelection() {
-        console.log("Clear Selection");
-        this.selectedItem = null;
         this.searchTerm = '';
+        this.selectedItem = null;
+        this.highlightedIndex = -1;
+        this.closeDropdown();
     }
 
 
