@@ -1,0 +1,23 @@
+
+<!-- Delete Form of [App].[Gender] -->
+
+<app-modal #deleteModal
+           [(Visible)]="modalVisible"
+           [Header]='header("Gender")'
+           (onClosed)='onClosed.emit(false)'>
+    <form #genderDeleteUI='ngForm'
+          (ngSubmit)='onDelete(genderDeleteUI)'>
+        <div class="container">
+            <presenter [name]='"title"'
+                       [title]="'Title : '"
+                       [value]="currentInstance.title" />
+			<presenter [name]='"preFix"'
+                       [title]="'Pre Fix : '"
+                       [value]="currentInstance.preFix" />
+        </div>
+    </form>
+    <delete-buttons actions
+                    (onDelete)='onDelete(genderDeleteUI)'
+                    (onCancle)='onClose(false)'>
+    </delete-buttons>
+</app-modal>

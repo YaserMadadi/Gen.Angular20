@@ -25,7 +25,7 @@ export class StudentCourse extends BaseEntity implements IBaseEntity<StudentCour
 
   //region Info
 
-  public static override readonly Info: Info = new Info('App', 'StudentCourse', 'Student Course');
+  public static override readonly Info: Info = new Info('App', 'StudentCourse', 'درسهای دانشجو');
 
   //endregion
 
@@ -45,21 +45,11 @@ export class StudentCourse extends BaseEntity implements IBaseEntity<StudentCour
 
   //#endregion
 
-  
-  public SeekInstance(): StudentCourse {
-    return StudentCourse.SeekInstance();
-  }
-
-  public static override SeekInstance() : StudentCourse {
-    let studentCourse: StudentCourse = new StudentCourse();
-    // No Item...
-    return studentCourse;
-  }
-
   public static Validate(studentCourse: StudentCourse) : boolean {
     let result = 
       Validator.Validate(studentCourse.student) &&
-		Validator.Validate(studentCourse.course);
+		Validator.Validate(studentCourse.course) &&
+		Validator.Validate(studentCourse.takenDate);
 
     if(result === false)
       console.log('StudentCourse is unvalid : ', studentCourse);

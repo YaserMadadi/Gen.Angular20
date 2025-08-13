@@ -11,32 +11,29 @@ import { PermissionResult, PermissionType } from '../tools/enum';
 import { API_Operation } from './api.operation';
 import { Result } from '../tools/Result';
 import { ResultData } from '../tools/ResultData';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, lastValueFrom, map, Observable, of } from 'rxjs';
 import { IService } from './service.interface';
 import { IServiceCollection } from './service.collection.interface';
 import { ServiceCollection } from './service.collection';
+import { ServiceBuilder } from './service.builder';
 
 
 @Injectable({ providedIn: 'root' })
 export abstract class Service<T extends BaseEntity> implements IService<T> {
 
     public info: Info;
+    public builder: ServiceBuilder<T>;
     public router: Router;
     public activatedRoute: ActivatedRoute;
     public api_operation: API_Operation<T>;
 
-    constructor(info: Info) {
+    constructor(info: Info, builder: ServiceBuilder<T>) {
         this.router = inject(Router);
         this.activatedRoute = inject(ActivatedRoute);
         this.api_operation = inject(API_Operation<T>);
         this.info = info;
+        this.builder = builder;
     }
-
-    abstract CreateSeekInstance(): T;
-
-
-    abstract CreateInstance(id: number): T;
-    abstract CreateInstance(): T;
 
     //#region Permission
     CheckPermission(permissionType: PermissionType): PermissionResult {
@@ -107,7 +104,6 @@ export abstract class Service<T extends BaseEntity> implements IService<T> {
         return this.api_operation.RetrieveById(id, this.info)
             .pipe(
                 map((result: ResultData<T>) => {
-                    console.log('returned value');
                     return result.data;
                 }),
                 catchError((err: any, c: Observable<T>) => {
@@ -149,8 +145,8 @@ export abstract class Service<T extends BaseEntity> implements IService<T> {
     public Seek(entity: T): Observable<T[]> {
         return this.api_operation.Seek(entity)
             .pipe(
-                map((list: T[]) => {
-                    return list;
+                map((result: ResultData<T[]>) => {
+                    return result.data;
                 }),
                 catchError((err: any, c: Observable<T[]>) => {
                     console.log(`Error in Seek : ${entity.info.fullName}. Error : ${err}`);
@@ -231,8 +227,8 @@ export abstract class Service<T extends BaseEntity> implements IService<T> {
 
         return this.api_operation.CollectionOf<U>(sourcEntity, entity, extendedPath)
             .pipe(
-                map((list: U[]) => {
-                    return list;
+                map((list: ResultData<U[]>) => {
+                    return list.data;
                 }),
                 catchError((err: any, c: Observable<U[]>) => {
                     console.log(`Error in CollectionOf${entity.info.name} from ${sourcEntity.info.fullName}. Error : ${err}`);

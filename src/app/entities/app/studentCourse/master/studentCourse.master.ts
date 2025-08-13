@@ -1,9 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Tabs2Module } from '@coreui/angular';
 
-import { MasterUI } from '../../../../../core/ui/baseUI/MasterUI';
+import { SHARED_PIPES } from '../../../../../core/ui/pipes/sharedPipes';
+import { MasterUI } from '../../../../../core/ui/baseUI/masterUI';
 import { IMasterUI } from '../../../../../core/ui/baseUI/masterUI.interface';
+import { MasterButtons } from '../../../../../core/ui/components/master-buttons/master-buttons';
 import { MasterTrackerService } from '../../../../../core/service/uiService/master-tracker-service';
 import { PresenterTextBox } from '../../../../../core/ui/components/presenter-textbox/presenter-textbox';
 
@@ -25,16 +27,18 @@ import { StudentCourseDeleteUI } from '../delete/studentCourse.delete';
   imports: [
     Tabs2Module,
     CommonModule,
+    SHARED_PIPES,
+    MasterButtons,
     PresenterTextBox,
-    StudentCourseEditUI,
-    StudentCourseDeleteUI,
+    //StudentCourseEditUI,        
+    //StudentCourseDeleteUI,
     // No Item...
   ]
 })
 export class StudentCourseMasterUI extends MasterUI<StudentCourse> implements IMasterUI<StudentCourse> {
 
   constructor() {
-    super(inject(StudentCourseService), inject(MasterTrackerService))
+    super(inject(StudentCourseService))
   }
 
 

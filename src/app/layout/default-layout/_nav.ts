@@ -40,6 +40,11 @@ export const navItems: INavData[] = [
         icon: 'nav-icon-bullet',
       },
       {
+        name: 'student',
+        url: '/app/student',
+        icon: 'nav-icon-bullet',
+      },
+      {
         name: 'course master',
         url: '/app/course/29',
         icon: 'nav-icon-bullet',

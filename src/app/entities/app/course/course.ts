@@ -24,7 +24,7 @@ export class Course extends BaseEntity implements IBaseEntity<Course> {
 
   //region Info
 
-  public static override readonly Info: Info = new Info('App', 'Course', 'Course');
+  public static override readonly Info: Info = new Info('App', 'Course', 'درس');
 
   //endregion
 
@@ -43,17 +43,6 @@ export class Course extends BaseEntity implements IBaseEntity<Course> {
   public listOfStudentCourse: StudentCourse[] = [];
 
   //#endregion
-
-  
-  public SeekInstance(): Course {
-    return Course.SeekInstance();
-  }
-
-  public static override SeekInstance() : Course {
-    let course: Course = new Course();
-    course.isActive = undefined;
-    return course;
-  }
 
   public static Validate(course: Course) : boolean {
     let result = 

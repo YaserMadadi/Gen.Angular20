@@ -25,7 +25,7 @@ export class Student extends BaseEntity implements IBaseEntity<Student> {
 
   //region Info
 
-  public static override readonly Info: Info = new Info('App', 'Student', 'Student');
+  public static override readonly Info: Info = new Info('App', 'Student', 'دانشجو');
 
   //endregion
 
@@ -46,17 +46,6 @@ export class Student extends BaseEntity implements IBaseEntity<Student> {
   public listOfStudentCourse: StudentCourse[] = [];
 
   //#endregion
-
-  
-  public SeekInstance(): Student {
-    return Student.SeekInstance();
-  }
-
-  public static override SeekInstance() : Student {
-    let student: Student = new Student();
-    // No Item...
-    return student;
-  }
 
   public static Validate(student: Student) : boolean {
     let result = 

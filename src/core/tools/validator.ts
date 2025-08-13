@@ -47,11 +47,14 @@ export class Validator {
     }
 
     private static isBusinessObject(value: any): value is BaseEntity {
-        var result = value instanceof BaseEntity;
-        if (result)
-            return true;
-        if (value == null)
-            return false;
-        return 'timeStamp' in value;
+        return ("id" in value && "info" in value && "timestamp" in value);
+
+        //return value && value.id >= 0;
+        // var result = value instanceof BaseEntity;
+        // if (result)
+        //     return true;
+        // if (value == null)
+        //     return false;
+        // return 'timeStamp' in value;
     }
 }

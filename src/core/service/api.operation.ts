@@ -1,5 +1,5 @@
 //import { Http, Headers, RequestOptions, Response, RequestOptionsArgs, ResponseContentType } from "@angular/http";
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions } from "../tools/enum";
 import { Info } from "../info";
 import { BaseEntity } from "../BaseEntity";
@@ -13,7 +13,7 @@ import { Result } from '../../core/tools/Result';
 @Injectable({ providedIn: 'root' })
 export class API_Operation<T extends BaseEntity> extends EndPointController {
 
-  constructor(http: HttpClient) {
+  constructor(http: HttpClient = inject(HttpClient)) {
     super(http);
   }
 
@@ -61,9 +61,10 @@ export class API_Operation<T extends BaseEntity> extends EndPointController {
     return this.http.request<Result>('DELETE', url, { body: entity, headers: EndPointController.Options.headers });
   }
 
-  Seek(entity: T): Observable<T[]> {
+  Seek(entity: T): Observable<ResultData<T[]>> {
     let url = this.UrlCreator(Actions.Seek, entity.info);
-    return this.http.post<T[]>(url, entity, EndPointController.Options);
+    url += '/1';
+    return this.http.post<ResultData<T[]>>(url, entity, EndPointController.Options);
   }
 
   SeekLast(entity: T): Observable<T> {
@@ -77,14 +78,14 @@ export class API_Operation<T extends BaseEntity> extends EndPointController {
     return this.http.get<ResultData<T[]>>(url, EndPointController.Options);
   }
 
-  CollectionOf<U extends BaseEntity>(sourcEntity: T, entity: U, extendedPath: string = ''): Observable<U[]> {
-
+  CollectionOf<U extends BaseEntity>(sourcEntity: T, entity: U, extendedPath: string = ''): Observable<ResultData<U[]>> {
+    console.log('API_Operation CollectionOf', entity);
     if (extendedPath === '' || extendedPath.length === 0)
       extendedPath = sourcEntity.info.name;
 
     let url = `${API_Operation.BaseUrl}${sourcEntity.info.schema}/${extendedPath}/${sourcEntity.id}/${entity.info.name}`;
     return this.http
-      .post<U[]>(url, entity, EndPointController.Options);
+      .post<ResultData<U[]>>(url, entity, EndPointController.Options);
   }
 
   LoadFactory<U extends BaseEntity>(entity: T, info: Info): Observable<U> {

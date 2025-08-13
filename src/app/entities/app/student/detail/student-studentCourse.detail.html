@@ -1,30 +1,67 @@
-
 <div class="card text-center">
     <div class="card-body">
-        <table class="table-hover table-striped">
+        <table class="table table-striped table-hover">
             <thead>
                 <tr>
-                   <th>#</th>
-                    <th>Student Course </th>
+                    <th>#</th>
+                    <th>دانشجــو</th>
+                    <th>درس</th>
+                    <th>تاریخ انتخاب واحد</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th></th>
+
+                    <th>
+                        <lookup [items]='courseLinker.list$ | async'
+                                [textField]='"descriptor"'
+                                [valueField]='"id"'
+                                [filterable]='courseLinker.filterable'
+                                [(ngModel)]='filterInstance.course'
+                                [(selectedItem)]='filterInstance.course'
+                                (onSeek)='courseLinker.onSeek($event)'
+                                (onInit)='courseLinker.onInit($event)'
+                                (selectedItemChange)='onSeek()' />
+                    </th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let studentCourse of list$ | async; let i = index">
+                @for(studentCourse of list$ | async; track studentCourse; let i = $index) {
+                <tr (click)='onRowClick(studentCourse)'
+                    (dblclick)='onRowDblClick(studentCourseEditUI)'
+                    [class.table-primary]='currentInstance.id == studentCourse?.id'
+                    (mouseenter)='setIndex(i)'
+                    (mouseleave)='setIndex(-1)'>
                     <td>{{ i + 1 }}</td>
-                    <td>{{ studentCourse!.descriptor }}</td>
+                    <td>{{ studentCourse.student!.descriptor }}</td>
+                    <td>{{ studentCourse.course!.descriptor }}</td>
+                    <td>{{ studentCourse.takenDate| date:'fullDate' }}</td>
+                    <td class='action'>
+                        <row-buttons [route]="'/app/studentCourse'"
+                                     [id]='studentCourse.id'
+                                     *ngIf='checkIndex(i)' />
+                    </td>
                 </tr>
+                }
             </tbody>
         </table>
     </div>
-    <div class="card-footer text-body-secondary">
-        <detail-buttons class="text-end"
-                        (addButtonClick)="onAddButtonClick(studentCourseEditUI)"
-                        (editButtonClick)="onEditButtonClick(studentCourseEditUI)"
-                        (deleteButtonClick)="onDeleteButtonClick(studentCourseDeleteUI)">
+    <div class='card-footer text-body-secondary'>
+        <detail-buttons class='text-end'
+                        [currentInstance_Id]='currentInstance.id'
+                        (addButtonClick)='onAddButtonClick(studentCourseEditUI)'
+                        (editButtonClick)='onEditButtonClick(studentCourseEditUI)'
+                        (deleteButtonClick)='onDeleteButtonClick(studentCourseDeleteUI)'
+                        (refreshButtonClick)='onReload()'>
         </detail-buttons>
     </div>
 </div>
 
-<app-studentCourse-edit #studentCourseEditUI />
-<app-studentCourse-delete #studentCourseDeleteUI />
-
+<app-studentCourse-edit #studentCourseEditUI
+                        [studentLocked]='true'
+                        (onClosed)='onEditUIClosed($event)' />
+<app-studentCourse-delete #studentCourseDeleteUI
+                          (onClosed)='onDeleteUIClosed($event)' />

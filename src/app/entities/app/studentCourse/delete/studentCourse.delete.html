@@ -7,36 +7,16 @@
            (onClosed)='onClosed.emit(false)'>
     <form #studentCourseDeleteUI='ngForm'
           (ngSubmit)='onDelete(studentCourseDeleteUI)'>
-        
-        <div class="form-floating mb-3">
-            <input #student_Id
-                   id='student_Id'
-                   name='student_Id'
-                   class='form-control'
-                   type='text'
-                   readonly
-                   [(ngModel)]='currentInstance.student!.descriptor' />
-            <label for="student_Id">Student</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input #course_Id
-                   id='course_Id'
-                   name='course_Id'
-                   class='form-control'
-                   type='text'
-                   readonly
-                   [(ngModel)]='currentInstance.course!.descriptor' />
-            <label for="course_Id">Course</label>
-        </div>
-            <div class="form-floating mb-3">
-            <input #takenDate
-                   id='takenDate'
-                   name='takenDate'
-                   class='form-control'
-                   type='date'
-                   readonly
-                   [(ngModel)]='currentInstance.takenDate' />
-            <label for="takenDate">Taken Date</label>
+        <div class="container">
+            <presenter [name]='"student_Id"'
+                       [title]="'دانشجــو : '"
+                       [value]="currentInstance.student!.descriptor" />
+			<presenter [name]='"course_Id"'
+                       [title]="'درس : '"
+                       [value]="currentInstance.course!.descriptor" />
+			<presenter [name]='"takenDate"'
+                       [title]="'تاریخ انتخاب واحد : '"
+                       [value]="currentInstance.takenDate | date:'fullDate'" />
         </div>
     </form>
     <delete-buttons actions

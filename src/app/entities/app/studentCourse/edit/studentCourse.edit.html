@@ -8,30 +8,54 @@
           (ngSubmit)='Save(studentCourseEditUI)' 
           autocomplete='off'>
         <div class='form-margin'>
-            <!-- Student -->
-        <div class="form-floating mb-3">
-            <!--  Lookup  -->
-            <label for="student">Student</label>
-        </div> 
-			<!-- Course -->
-        <div class="form-floating mb-3">
-            <!--  Lookup  -->
-            <label for="course">Course</label>
-        </div> 
-			<!-- TakenDate -->
-        <div class="form-floating mb-3">
-            <input #takenDate
+            <!-- دانشجــو -->
+            <div class="mb-3">
+                <lookup #student
+                        required
+                        name='student'
+                        label='دانشجــو : '
+                        [textField]="'descriptor'"
+                        [valueField]="'id'"
+                        [items]='studentLinker.list$ | async'
+                        [locked]='studentLinker.locked'
+                        [filterable]='studentLinker.filterable'
+                        [(ngModel)]='currentInstance.student'
+                        [(selectedItem)]='currentInstance.student'
+                        (onSeek)='studentLinker.onSeek($event)' >
+                </lookup>
+            </div>
+				<!-- درس -->
+            <div class="mb-3">
+                <lookup #course
+                        required
+                        name='course'
+                        label='درس : '
+                        [textField]="'descriptor'"
+                        [valueField]="'id'"
+                        [items]='courseLinker.list$ | async'
+                        [locked]='courseLinker.locked'
+                        [filterable]='courseLinker.filterable'
+                        [(ngModel)]='currentInstance.course'
+                        [(selectedItem)]='currentInstance.course'
+                        (onSeek)='courseLinker.onSeek($event)' >
+                </lookup>
+            </div>
+				<!-- TakenDate -->
+            <!-- <div class='form-floating mb-3'>
+                <input #takenDate
+                   required
                    id='takenDate'
                    name='takenDate'
                    class='form-control'
-                   type='datetime'
+                   type='date'
                    [(ngModel)]='currentInstance.takenDate' />
-            <label for="takenDate">Taken Date</label>
-        </div> 
-			
+                <label for='takenDate'>تاریخ انتخاب واحد</label>
+            </div> --> 
+				
         </div>
     </form>
     <edit-buttons actions
+                  [disabled]='!studentCourseEditUI.valid'
                   (onSave)='Save(studentCourseEditUI)'
                   (onCancle)='onClose(false)'>
     </edit-buttons>

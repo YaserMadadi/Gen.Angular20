@@ -1,13 +1,17 @@
 
 
-import { CommonModule, DatePipe  } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, ViewChild, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { FormsModule } from '@angular/forms';
           
-import { IndexButton } from '../../../../components/index/index-buttons/index-button';
-import { SeekBar } from '../../../../components/index/seekBar/seek-bar';
-import { RowButtons } from '../../../../components/index/row-buttons/row-buttons';
+import { DropdownMenuItem } from '../../../../../core/ui/components/dropdown-menu/dropdown-menu-item.model';
+import { IndexButton } from '../../../../../core/ui/components/index-buttons/index-button';
+import { RowButtons } from '../../../../../core/ui/components/row-buttons/row-buttons';
+import { LookupComponent } from '../../../../../core/ui/components/lookup/lookup';
+
+import { ForeignkeyLinker } from '../../../../../core/ui/helper/foreignkey-linker';
           
 import { IIndexUI } from '../../../../../core/ui/baseUI/indexUI.interface';
 import { IndexUI } from '../../../../../core/ui/baseUI/indexUI';
@@ -15,6 +19,9 @@ import { Student } from '../student';
 import { StudentService } from '../student.service';
 import { StudentDeleteUI } from '../delete/student.delete';
 import { StudentEditUI } from '../edit/student.edit';
+import { Gender } from '../../gender/gender';
+import { StudentCourse } from '../../studentCourse/studentCourse';
+import { StudentCourseEditUI } from '../../studentCourse/edit/studentCourse.edit';
 
 
 
@@ -25,20 +32,38 @@ import { StudentEditUI } from '../edit/student.edit';
   providers: [StudentService],
   imports: [
     CommonModule,
+    FormsModule,
     RouterModule,
     ButtonModule,
-    DatePipe,
     IndexButton,
-    SeekBar,
     RowButtons,
     StudentEditUI,
     StudentDeleteUI,
+    LookupComponent,
+		StudentCourseEditUI,
   ]
 })
 export class StudentIndexUI extends IndexUI<Student> implements IIndexUI<Student> {
 
-  constructor() {
-    super(inject(StudentService));
+  constructor(public override service: StudentService = inject(StudentService)) {
+    super(service);
+    this.genderLinker = new ForeignkeyLinker<Gender>(this.service.genderService, false);
+
+    this.quickAddItems = [new DropdownMenuItem('Add  درسهای دانشجو', () => this.onAddStudentCourse()),];
+
+    this.linkedEntityItems = [new DropdownMenuItem('Manage  جنسیت', () => this.navigateToUrl('/app/gender')),];
+  }
+
+  public genderLinker: ForeignkeyLinker<Gender>;
+
+  
+  @ViewChild('studentCourseEditUI')
+  public studentCourseEditUI!: StudentCourseEditUI;
+
+  onAddStudentCourse() {
+    let studentCourse = new StudentCourse();
+    studentCourse.student = this.currentInstance;
+    this.studentCourseEditUI.Show(studentCourse);
   }
 
 

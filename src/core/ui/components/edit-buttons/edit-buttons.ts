@@ -22,6 +22,9 @@ export class EditButtons {
     @Output()
     public onCancle: EventEmitter<void> = new EventEmitter<void>();
 
+    @Input()
+    public disabled: boolean = false;
+
     onSaveButtonClick() {
         this.onSave.emit();
     }

@@ -1,39 +1,43 @@
+
 <div class="container">
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <strong>Student</strong>
+                    <strong>دانشجو</strong>
                 </div>
                 <div class="card-body">
                     <div class="container">
-                        <presenter-textbox [title]="'نام : '">
-                            {{ currentInstance.firstName }}
+                        <presenter-textbox [title]="'نام'">
+                            {{ currentInstance.firstName  }}
                         </presenter-textbox>
-                        <presenter-textbox [title]="'نام خانوادگی : '">
-                            {{ currentInstance.lastName }}
+						<presenter-textbox [title]="'نام خانوادگی'">
+                            {{ currentInstance.lastName  }}
                         </presenter-textbox>
-                        <presenter-textbox [title]="'جنسیت : '">
+						<presenter-textbox [title]="'جنسیت'">
                             {{ currentInstance.gender?.descriptor }}
                         </presenter-textbox>
-                        <presenter-textbox [title]="'کد دانشجو : '">
+						<presenter-textbox [title]="'کد دانشجویی'">
                             {{ currentInstance.code | number }}
                         </presenter-textbox>
                     </div>
                 </div>
-
+                <div class='card-footer'>
+                    <master-buttons (onRefreshClick)='onLoad()' />
+                </div>
+                
                 <c-tabs [activeItemKey]="'studentCourse'"
                         class="m-3 detail-tabs">
                     <c-tabs-list variant="tabs">
-
+                        
                         <button cTab
-                                itemKey="studentCourse">Student Course</button>
+                                itemKey="studentCourse">درسهای دانشجو</button>
                     </c-tabs-list>
                     <c-tabs-content>
-
+                        
                         <c-tab-panel class="p-3"
                                      itemKey="studentCourse">
-                            <app-student-studentCourse-detail />
+                            <app-student-studentCourse-detail [student]='currentInstance' />
                         </c-tab-panel>
                     </c-tabs-content>
                 </c-tabs>
@@ -41,3 +45,4 @@
         </div>
     </div>
 </div>
+

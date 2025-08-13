@@ -3,43 +3,78 @@
     <div class='col-12'>
         <div class='card'>
             <div class="card-header">
-                    <strong>Student</strong>
+                    <strong>دانشجو</strong>
                 </div>
             <div class='card-body'>
                 <index-button [Id]='currentInstance.id'
                               (addButtonClick)='addRecord(studentEditUI)'
                               (editButtonClick)='editRecord(studentEditUI)'
                               (deleteButtonClick)='deleteRecord(studentDeleteUI)' 
-                              (refreshButtonClick)='onRefresh()'/>
+                              (refreshButtonClick)='onRefresh()'
+                              [quickAddMenuDisabled]='currentInstance!.id == 0'
+                              [quickAddItems]='quickAddItems'
+                              [linkedEntityItems]='linkedEntityItems'/>
                 <hr>
-                <seek-bar (onSeeking)='onSeek($event)' />
-                <hr>
-
                 <table class='table table-striped table-hover'>
                     <thead>
                         <tr>
                             <th class='row-number'></th>
-						<th>First Name</th>
-						<th>Last Name</th>
-						<th>Gender</th>
-						<th>Code</th>
+						<th>نام</th>
+						<th>نام خانوادگی</th>
+						<th>جنسیت</th>
+						<th>کد دانشجویی</th>
 						<th>Action</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+						<th>
+                                <input type='text'
+                                       class='form-control'
+                                       [(ngModel)]='filterInstance.firstName'
+                                       (input)='onSeek()'
+                                       placeholder='Search نام' /></th>
+						<th>
+                                <input type='text'
+                                       class='form-control'
+                                       [(ngModel)]='filterInstance.lastName'
+                                       (input)='onSeek()'
+                                       placeholder='Search نام خانوادگی' /></th>
+						<th>
+                                <lookup [items]='genderLinker.list$ | async'
+                                        [textField]='"descriptor"'
+                                        [valueField]='"id"'
+                                        [filterable]='genderLinker.filterable'
+                                        [(ngModel)]='filterInstance.gender'
+                                        [(selectedItem)]='filterInstance.gender'
+                                        (onSeek)='genderLinker.onSeek($event)'
+                                        (onInit)='genderLinker.onInit($event)'
+                                        (selectedItemChange)='onSeek()'>
+                                </lookup></th>
+						<th><input type='number'
+                                       class='form-control'
+                                       [(ngModel)]='filterInstance.code'
+                                       (input)='onSeek()'
+                                       placeholder='Search کد دانشجویی' /></th>
+						<th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @for(student of list$ | async; track student; let i = $index) {
-                            <tr (click)='onSelect(student)'
-                                (dblclick)='onDoubleClick(studentEditUI)'
-                                [class.table-primary]='currentInstance.id == student.id'
-                                class='table-row-hover'>
-                                <td class='row-number'>{{ i+1 }}</td>
+                        <tr (click)='onSelect(student)'
+                            (dblclick)='onDoubleClick(studentEditUI)'
+                            [class.table-primary]='currentInstance.id == student.id'
+                            (mouseenter)='setIndex(i)'
+                            (mouseleave)='setIndex(-1)'
+                            class='table-row-hover'>
+                            <td class='row-number'>{{ i+1 }}</td>
 							<td>{{ student.firstName }}</td>
 							<td>{{ student.lastName }}</td>
 							<td>{{ student.gender?.descriptor }}</td>
 							<td>{{ student.code | number }}</td>
                             <td>
                                 <row-buttons [route]="'/app/student'"
-                                             [id]='student.id'  />
+                                             [id]='student.id'  
+                                             *ngIf='checkIndex(i)'/>
                             </td>
                         </tr>
                         }
@@ -55,3 +90,6 @@
                  (onClosed)='onEditClosed($event)' />
 <app-student-delete #studentDeleteUI
                    (onClosed)='onDeleteClosed($event)' />
+
+<app-studentCourse-edit #studentCourseEditUI
+                        [studentLocked]='true' />

@@ -15,7 +15,7 @@ import { routes } from './root.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
-import { DatePipe, DecimalPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { isActivePipe } from '../core/ui/pipes/isActive.pipe';
 import { havePipe } from '../core/ui/pipes/have.pipe';
 
@@ -23,7 +23,7 @@ export const appConfig: ApplicationConfig = {
 
   providers: [
     provideHttpClient(),
-    DatePipe, DecimalPipe, isActivePipe, havePipe,
+    // isActivePipe, havePipe,
     provideRouter(routes,
       withRouterConfig({
         onSameUrlNavigation: 'reload'
@@ -36,7 +36,7 @@ export const appConfig: ApplicationConfig = {
       withViewTransitions(),
       withHashLocation()
     ),
-    importProvidersFrom(SidebarModule, DropdownModule),
+    importProvidersFrom(SidebarModule, DropdownModule, CommonModule),
     IconSetService,
     provideAnimationsAsync(),
     providePrimeNG({

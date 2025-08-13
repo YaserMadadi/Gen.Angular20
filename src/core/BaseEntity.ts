@@ -22,6 +22,8 @@ export class BaseEntity implements IBaseEntity<BaseEntity> {
 
   isNew: boolean = true;
 
+  [key: string]: any;
+
   public static SeekInstance(): BaseEntity {
     return new BaseEntity();
   }

@@ -1,0 +1,50 @@
+<!-- Edit Form of [App].[StudentCourse] -->
+<app-modal #modal
+           [(Visible)]='modalVisible'
+           [Header]='header("StudentCourse")'
+           (onClosed)='closed(false)'>
+    <form #studentCourseEditUI='ngForm'
+          (ngSubmit)='Save(studentCourseEditUI)'
+          autocomplete='off'>
+        <div class='form-margin'>
+            <!-- Student -->
+            <div class="mb-3">
+                <lookup #student
+                        required
+                        id="student"
+                        name="student"
+                        [items]="studentLinker.list$ | async"
+                        [textField]="'descriptor'"
+                        [valueField]="'id'"
+                        [filterable]='studentLinker.filterable'
+                        [label]="'Student : '"
+                        [(ngModel)]='currentInstance.student'
+                        [(selectedItem)]='currentInstance.student'
+                        (onSeek)="studentLinker.onSeek($event)">
+                </lookup>
+            </div>
+            <!-- Course -->
+            <div class="mb-3">
+                <lookup #course
+                        required
+                        id="course"
+                        name="course"
+                        [items]="courseLinker.list$ | async"
+                        [textField]="'descriptor'"
+                        [valueField]="'id'"
+                        [filterable]='courseLinker.filterable'
+                        [label]="'Course : '"
+                        [(ngModel)]='currentInstance.course'
+                        [(selectedItem)]='currentInstance.course'
+                        (onSeek)="courseLinker.onSeek($event)">
+                </lookup>
+            </div>
+            <!-- TakenDate -->
+        </div>
+    </form>
+    <edit-buttons actions
+                  [disabled]='!studentCourseEditUI.valid'
+                  (onSave)='Save(studentCourseEditUI)'
+                  (onCancle)='onClose(false)'>
+    </edit-buttons>
+</app-modal>

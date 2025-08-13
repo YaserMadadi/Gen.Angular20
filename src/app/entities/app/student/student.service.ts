@@ -12,35 +12,21 @@ import { MessageController } from '../../../../core/tools/controller.message';
 import { MessageType } from '../../../../core/tools/enum';
 
 import { Student } from './student';
-import { StudentServiceCollection } from './student.service.collection';
+import { StudentBuilder } from './student.builder';
+
+
 import { GenderService } from '../gender/gender.service';
-
-
 
 @Injectable({ providedIn: 'root' })
 export class StudentService extends Service<Student> implements IService<Student> {
 
-  constructor() {
-    super(Student.Info);
+  constructor(){
+    super(Student.Info, inject(StudentBuilder));
   }
 
   public genderService: GenderService = inject(GenderService);
 
   //#region     Abstract Members - Start.
-  override CreateInstance(id: number = 0): Student {
-    return new Student();
-  }
-
-  static CreateSeekInstance(): Student {
-    return Student.SeekInstance();
-  }
-
-  override CreateSeekInstance(): Student {
-    return Student.SeekInstance();
-  }
-
-
-
 
   //#region Methods
 
@@ -76,7 +62,7 @@ export class StudentService extends Service<Student> implements IService<Student
     return super.Delete(student);
   }
 
-  override Seek(student: Student = Student.SeekInstance(), pageNumber: number = 1): Observable<Student[]> {
+  override Seek(student: Student = this.builder.BuildSeekInstance(), pageNumber: number = 1): Observable<Student[]> {
     return super.Seek(student); // TODO: find an integrated solution for pageNumber
   }
 
@@ -85,11 +71,10 @@ export class StudentService extends Service<Student> implements IService<Student
   }
 
   override SeekByValue(value: string = ''): Observable<Student[]> {
-    console.log('Fire');
     return super.SeekByValue(value);
   }
 
-  //#endregion
+	//#endregion
 
   ////TODO: Load current factory Child based on id !
 

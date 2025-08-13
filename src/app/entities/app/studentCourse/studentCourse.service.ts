@@ -12,32 +12,24 @@ import { MessageController } from '../../../../core/tools/controller.message';
 import { MessageType } from '../../../../core/tools/enum';
 
 import { StudentCourse } from './studentCourse';
-import { StudentCourseServiceCollection } from './studentCourse.service.collection';
+import { StudentCourseBuilder } from './studentCourse.builder';
 
 
+import { CourseService } from '../course/course.service';
+import { StudentService } from '../student/student.service';
 
 @Injectable({ providedIn: 'root' })
 export class StudentCourseService extends Service<StudentCourse> implements IService<StudentCourse> {
 
-  constructor() {
-    super(StudentCourse.Info);
+  constructor(){
+    super(StudentCourse.Info, inject(StudentCourseBuilder));
   }
+
+  public courseService: CourseService = inject(CourseService);
+
+	public studentService: StudentService = inject(StudentService);
 
   //#region     Abstract Members - Start.
-  override CreateInstance(id: number = 0): StudentCourse {
-    return new StudentCourse();
-  }
-
-  static CreateSeekInstance(): StudentCourse {
-    return StudentCourse.SeekInstance();
-  }
-
-  override CreateSeekInstance(): StudentCourse {
-    return StudentCourse.SeekInstance();
-  }
-
-
-
 
   //#region Methods
 
@@ -73,7 +65,7 @@ export class StudentCourseService extends Service<StudentCourse> implements ISer
     return super.Delete(studentCourse);
   }
 
-  override Seek(studentCourse: StudentCourse = StudentCourse.SeekInstance(), pageNumber: number = 1): Observable<StudentCourse[]> {
+  override Seek(studentCourse: StudentCourse = this.builder.BuildSeekInstance(), pageNumber: number = 1): Observable<StudentCourse[]> {
     return super.Seek(studentCourse); // TODO: find an integrated solution for pageNumber
   }
 
@@ -85,7 +77,7 @@ export class StudentCourseService extends Service<StudentCourse> implements ISer
     return super.SeekByValue(value);
   }
 
-  //#endregion
+	//#endregion
 
   ////TODO: Load current factory Child based on id !
 

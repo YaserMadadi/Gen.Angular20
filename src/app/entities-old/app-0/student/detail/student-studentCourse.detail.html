@@ -1,0 +1,30 @@
+
+<div class="card text-center">
+    <div class="card-body">
+        <table class="table-hover table-striped">
+            <thead>
+                <tr>
+                   <th>#</th>
+                    <th>Student Course </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let studentCourse of list$ | async; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ studentCourse!.descriptor }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer text-body-secondary">
+        <detail-buttons class="text-end"
+                        (addButtonClick)="onAddButtonClick(studentCourseEditUI)"
+                        (editButtonClick)="onEditButtonClick(studentCourseEditUI)"
+                        (deleteButtonClick)="onDeleteButtonClick(studentCourseDeleteUI)">
+        </detail-buttons>
+    </div>
+</div>
+
+<app-studentCourse-edit #studentCourseEditUI />
+<app-studentCourse-delete #studentCourseDeleteUI />
+

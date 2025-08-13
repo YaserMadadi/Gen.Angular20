@@ -1,0 +1,36 @@
+<div class="card text-center">
+    <div class="card-body">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Student</th>
+                    <th>Course</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(studentCourse of list$ | async; track student; let i = $index) {
+                <tr (click)="onRowClick(studentCourse)"
+                    (dblclick)="onRowDblClick(studentCourseEditUI)"
+                    [class.table-primary]='currentInstance?.id == studentCourse?.id'>
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ studentCourse?.student?.descriptor }}</td>
+                    <td>{{ studentCourse?.course?.descriptor }}</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer text-body-secondary">
+        <detail-buttons class="text-end"
+                        (addButtonClick)="onAddButtonClick(studentCourseEditUI)"
+                        (editButtonClick)="onEditButtonClick(studentCourseEditUI)"
+                        (deleteButtonClick)="onDeleteButtonClick(studentCourseDeleteUI)">
+        </detail-buttons>
+    </div>
+</div>
+
+<app-studentCourse-edit #studentCourseEditUI
+                        [currentInstance]='currentInstance' />
+<app-studentCourse-delete #studentCourseDeleteUI
+                          [currentInstance]='currentInstance' />

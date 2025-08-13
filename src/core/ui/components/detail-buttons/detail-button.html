@@ -1,20 +1,32 @@
-<div class="">
-    <button class="btn btn-outline-success mt-2 m-1 btn-sm"
-            (click)="addButtonClick.emit()"
-            [disabled]="!addButtonVisibility">
-        <!-- <i class="cil-medical-cross icon"></i> -->
-        افزودن
-    </button>
-    <button class="btn btn-outline-dark mt-2 m-1 btn-sm"
-            (click)="editButtonClick.emit()"
-            [disabled]="!editButtonVisibility">
-        <!-- <i class="cil-medical-cross icon"></i> -->
-        ویرایش
-    </button>
-    <button class="btn btn-outline-danger mt-2 m-1 btn-sm"
-            (click)="deleteButtonClick.emit()"
-            [disabled]="!deleteButtonVisibility">
-        <!-- <i class="cil-medical-cross icon"></i> -->
-        حذف
-    </button>
+<div class="d-flex justify-content-between">
+    <div>
+        <button class="btn btn-outline-info mt-2 m-1"
+                (click)="addButtonClick.emit()"
+                *ngIf="addButtonVisibility">
+            <!-- <i class="cil-medical-cross icon"></i> -->
+            افزودن
+        </button>
+        <button class="btn btn-outline-secondary mt-2 m-1"
+                (click)="editButtonClick.emit()"
+                *ngIf="editButtonVisibility"
+                [disabled]="currentInstance_Id === 0">
+            <!-- <i class="cil-medical-cross icon"></i> -->
+            ویرایش
+        </button>
+        <button class="btn btn-outline-warning mt-2 m-1"
+                (click)="deleteButtonClick.emit()"
+                *ngIf="deleteButtonVisibility"
+                [disabled]="currentInstance_Id === 0">
+            <!-- <i class="cil-medical-cross icon"></i> -->
+            حذف
+        </button>
+    </div>
+    <div>
+        <button class="btn btn-outline-default mt-2 m-1 refresh-btn"
+                (click)="refreshButtonClick.emit()"
+                *ngIf="refreshButtonVisibility">
+            <!-- <i class="cil-medical-cross icon"></i> -->
+            بازیابی مجــدد
+        </button>
+    </div>
 </div>

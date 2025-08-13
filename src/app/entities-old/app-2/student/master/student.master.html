@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Student</strong>
+                </div>
+                <div class="card-body">
+                    <div class="container">
+                        <presenter-textbox [title]="'First Name'">
+                            {{ currentInstance?.firstName }}
+                        </presenter-textbox>
+                        <presenter-textbox [title]="'Last Name'">
+                            {{ currentInstance?.lastName }}
+                        </presenter-textbox>
+                        <presenter-textbox [title]="'Gender'">
+                            {{ currentInstance?.gender?.descriptor }}
+                        </presenter-textbox>
+                        <presenter-textbox [title]="'Code'">
+                            {{ currentInstance?.code | number }}
+                        </presenter-textbox>
+                    </div>
+                </div>
+
+                <c-tabs [activeItemKey]="'studentCourse'"
+                        class="m-3 detail-tabs">
+                    <c-tabs-list variant="tabs">
+
+                        <button cTab
+                                itemKey="studentCourse">Student Course</button>
+                    </c-tabs-list>
+                    <c-tabs-content>
+
+                        <c-tab-panel class="p-3"
+                                     itemKey="studentCourse">
+                            <app-student-studentCourse-detail [student]="currentInstance" />
+                        </c-tab-panel>
+                    </c-tabs-content>
+                </c-tabs>
+            </div>
+        </div>
+    </div>
+</div>

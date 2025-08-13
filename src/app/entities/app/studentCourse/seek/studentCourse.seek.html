@@ -3,42 +3,72 @@
     <div class='col-12'>
         <div class='card'>
             <div class="card-header">
-                    <strong>Student Course</strong>
+                    <strong>درسهای دانشجو</strong>
                 </div>
             <div class='card-body'>
                 <index-button [Id]='currentInstance.id'
                               (addButtonClick)='addRecord(studentCourseEditUI)'
                               (editButtonClick)='editRecord(studentCourseEditUI)'
                               (deleteButtonClick)='deleteRecord(studentCourseDeleteUI)' 
-                              (refreshButtonClick)='onRefresh()'/>
+                              (refreshButtonClick)='onRefresh()'
+                              [quickAddMenuDisabled]='currentInstance!.id == 0'
+                              [quickAddItems]='quickAddItems'
+                              [linkedEntityItems]='linkedEntityItems'/>
                 <hr>
-                <seek-bar (onSeeking)='onSeek($event)' />
-                <hr>
-
                 <table class='table table-striped table-hover'>
                     <thead>
                         <tr>
                             <th class='row-number'></th>
-						<th>Student</th>
-						<th>Course</th>
+						<th>دانشجــو</th>
+						<th>درس</th>
 				<!-- TakenDate -->
-						<th>Taken Date</th>
+						<th>تاریخ انتخاب واحد</th>
 						<th>Action</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+						<th>
+                                <lookup [items]='studentLinker.list$ | async'
+                                        [textField]='"descriptor"'
+                                        [valueField]='"id"'
+                                        [filterable]='studentLinker.filterable'
+                                        [(ngModel)]='filterInstance.student'
+                                        [(selectedItem)]='filterInstance.student'
+                                        (onSeek)='studentLinker.onSeek($event)'
+                                        (onInit)='studentLinker.onInit($event)'
+                                        (selectedItemChange)='onSeek()'>
+                                </lookup></th>
+						<th>
+                                <lookup [items]='courseLinker.list$ | async'
+                                        [textField]='"descriptor"'
+                                        [valueField]='"id"'
+                                        [filterable]='courseLinker.filterable'
+                                        [(ngModel)]='filterInstance.course'
+                                        [(selectedItem)]='filterInstance.course'
+                                        (onSeek)='courseLinker.onSeek($event)'
+                                        (onInit)='courseLinker.onInit($event)'
+                                        (selectedItemChange)='onSeek()'>
+                                </lookup></th>
+				<!-- TakenDate -->
+						<th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @for(studentCourse of list$ | async; track studentCourse; let i = $index) {
-                            <tr (click)='onSelect(studentCourse)'
-                                (dblclick)='onDoubleClick(studentCourseEditUI)'
-                                [class.table-primary]='currentInstance.id == studentCourse.id'
-                                class='table-row-hover'>
-                                <td class='row-number'>{{ i+1 }}</td>
+                        <tr (click)='onSelect(studentCourse)'
+                            (dblclick)='onDoubleClick(studentCourseEditUI)'
+                            [class.table-primary]='currentInstance.id == studentCourse.id'
+                            (mouseenter)='setIndex(i)'
+                            (mouseleave)='setIndex(-1)'
+                            class='table-row-hover'>
+                            <td class='row-number'>{{ i+1 }}</td>
 							<td>{{ studentCourse.student?.descriptor }}</td>
 							<td>{{ studentCourse.course?.descriptor }}</td>
-							<td>{{ studentCourse.takenDate | date:'fullDate' }}</td>
+							<td>{{ studentCourse.takenDate| date:'fullDate' }}</td>
                             <td>
                                 <row-buttons [route]="'/app/studentCourse'"
-                                             [id]='studentCourse.id'  />
+                                             [id]='studentCourse.id'  
+                                             *ngIf='checkIndex(i)'/>
                             </td>
                         </tr>
                         }
@@ -54,3 +84,5 @@
                  (onClosed)='onEditClosed($event)' />
 <app-studentCourse-delete #studentCourseDeleteUI
                    (onClosed)='onDeleteClosed($event)' />
+
+

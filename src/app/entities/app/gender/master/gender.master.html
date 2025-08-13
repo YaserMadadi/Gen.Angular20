@@ -4,17 +4,20 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <strong>Gender</strong>
+                    <strong>جنسیت</strong>
                 </div>
                 <div class="card-body">
                     <div class="container">
-                        <presenter-textbox [title]="'Title'">
-                            {{ currentInstance.title }}
+                        <presenter-textbox [title]="'عنوان'">
+                            {{ currentInstance.title  }}
                         </presenter-textbox>
-						<presenter-textbox [title]="'Pre Fix'">
-                            {{ currentInstance.preFix }}
+						<presenter-textbox [title]="'پیشوند'">
+                            {{ currentInstance.preFix  }}
                         </presenter-textbox>
                     </div>
+                </div>
+                <div class='card-footer'>
+                    <master-buttons (onRefreshClick)='onLoad()' />
                 </div>
                 
                 <c-tabs [activeItemKey]="'student'"
@@ -22,13 +25,13 @@
                     <c-tabs-list variant="tabs">
                         
                         <button cTab
-                                itemKey="student">Student</button>
+                                itemKey="student">دانشجو</button>
                     </c-tabs-list>
                     <c-tabs-content>
                         
                         <c-tab-panel class="p-3"
                                      itemKey="student">
-                            <app-gender-student-detail />
+                            <app-gender-student-detail [gender]='currentInstance' />
                         </c-tab-panel>
                     </c-tabs-content>
                 </c-tabs>

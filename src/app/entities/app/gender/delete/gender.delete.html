@@ -7,26 +7,13 @@
            (onClosed)='onClosed.emit(false)'>
     <form #genderDeleteUI='ngForm'
           (ngSubmit)='onDelete(genderDeleteUI)'>
-        
-        <div class="form-floating mb-3">
-            <input #title
-                   id='title'
-                   name='title'
-                   class='form-control'
-                   type='text'
-                   readonly
-                   [(ngModel)]='currentInstance.title' />
-            <label for="title">Title</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input #preFix
-                   id='preFix'
-                   name='preFix'
-                   class='form-control'
-                   type='text'
-                   readonly
-                   [(ngModel)]='currentInstance.preFix' />
-            <label for="preFix">Pre Fix</label>
+        <div class="container">
+            <presenter [name]='"title"'
+                       [title]="'عنوان : '"
+                       [value]="currentInstance.title" />
+			<presenter [name]='"preFix"'
+                       [title]="'پیشوند : '"
+                       [value]="currentInstance.preFix" />
         </div>
     </form>
     <delete-buttons actions

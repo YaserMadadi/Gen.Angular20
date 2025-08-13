@@ -18,11 +18,9 @@ export interface IIndexUI<T extends BaseEntity> {
 
     resetFilter(): void;
 
-    onInit(): void;
-
-    onSeek(value: string): void;
-    onRetrieveById(): void; // to update a single record!
-    onRetrieveAll(): void;
+    onSeek(): void;
+    onSeekByValue(value: string): void;
+    //onRetrieveAll(): void;
     onSelect(record: T): void; // fire when a record from list is selected
 
     onDoubleClick(editUI: EditUI<T>): void; // Open the masterUI

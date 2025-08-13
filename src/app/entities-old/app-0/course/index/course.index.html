@@ -1,0 +1,58 @@
+<div class='row'>
+    <div class='col-12'>
+        <div class='card'>
+            <div class="card-header">
+                <strong>Course</strong>
+            </div>
+            <div class='card-body'>
+                <index-button [Id]='currentInstance.id'
+                              (addButtonClick)='addRecord(courseEditUI)'
+                              (editButtonClick)='editRecord(courseEditUI)'
+                              (deleteButtonClick)='deleteRecord(courseDeleteUI)'
+                              (refreshButtonClick)='onRefresh()' />
+                <hr>
+                <seek-bar (onSeeking)='onSeekByValue($event)' />
+                <hr>
+
+                <table class='table table-striped table-hover'>
+                    <thead>
+                        <tr>
+                            <th class='row-number'></th>
+                            <th>Title</th>
+                            <th>Credit</th>
+                            <th>Is Active</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for(course of list$ | async; track course; let i = $index) {
+                        <tr (click)='onSelect(course)'
+                            (dblclick)='onDoubleClick(courseEditUI)'
+                            [class.table-primary]='currentInstance.id == course.id'
+                            class='table-row-hover'>
+                            <td class='row-number'>{{ i+1 }}</td>
+                            <td>{{ course.title }}</td>
+                            <td>{{ course.credit }}</td>
+                            <td width='100px'>
+                                <input type='checkbox'
+                                       [checked]='course.isActive'
+                                       disabled />
+                            </td>
+                            <td>
+                                <row-buttons [route]="'/app/course'"
+                                             [id]='course.id' />
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-course-edit #courseEditUI
+                 (onClosed)='onEditClosed($event)' />
+<app-course-delete #courseDeleteUI
+                   (onClosed)='onDeleteClosed($event)' />

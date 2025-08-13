@@ -8,20 +8,29 @@ import { ColorModeService, FormModule } from '@coreui/angular';
 import { FormsModule } from '@angular/forms';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from './icons/icon-subset';
-import { HttpClientModule, provideHttpClient } from '@angular/common/http';
-import { CompileMode, EndPointController } from '@core/tools/controller.endPoint';
+import { CompileMode, EndPointController } from '../core/tools/controller.endPoint';
+import { CommonModule } from '@angular/common';
+import { LogViewerService } from '../core/ui/components/log-viewer/log-viewer.service';
+import { LogViewer } from '../core/ui/components/log-viewer/log-viewer';
 
 
 @Component({
   selector: 'app-root',
-  template: '<router-outlet />',
+  template: '<log-viewer /><router-outlet />',
   providers: [],
   imports: [RouterOutlet,
     FormsModule,
-    RouterModule
+    CommonModule,
+    RouterModule,
+    LogViewer
   ]
 })
 export class AppComponent implements OnInit {
+
+  // constructor(public logViewerService: LogViewerService) {
+  //   super();
+  // }
+
   title = 'Nard';
 
   readonly #destroyRef: DestroyRef = inject(DestroyRef);
@@ -32,7 +41,7 @@ export class AppComponent implements OnInit {
   readonly #colorModeService = inject(ColorModeService);
   readonly #iconSetService = inject(IconSetService);
 
-  constructor() {
+  constructor(public logViewerService: LogViewerService = inject(LogViewerService)) {
     this.#titleService.setTitle(this.title);
     EndPointController.InitUrl(CompileMode.Local);
     // iconSet singleton

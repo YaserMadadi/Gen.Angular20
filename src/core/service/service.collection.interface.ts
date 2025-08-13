@@ -7,7 +7,7 @@ export interface IServiceCollection<T extends BaseEntity> {
 
     api_operation: API_Operation<T>;
 
-    Service: IService<T>;
+    //Service: IService<T>;
 
     //CollectionOf<U extends BaseEntity>(sourcEntity: T, collectionEntity: U, extendedPath?: string): Observable<U[]>;
 }

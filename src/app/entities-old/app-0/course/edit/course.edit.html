@@ -1,0 +1,50 @@
+<!-- Edit Form of [App].[Course] -->
+<app-modal #modal
+           [(Visible)]='modalVisible'
+           [Header]='header("Course")'
+           (onClosed)='closed(false)'>
+    <form #courseEditUI='ngForm'
+          (ngSubmit)='Save(courseEditUI)'
+          autocomplete='off'>
+        <div class='form-margin'>
+            <!-- Title -->
+            <div class="form-floating mb-3">
+                <input #title
+                       id='title'
+                       name='title'
+                       class='form-control'
+                       type='text'
+                       [(ngModel)]='currentInstance.title' />
+                <label for="title">Title</label>
+            </div>
+            <!-- Credit -->
+            <div class="form-floating mb-3">
+                <input #credit
+                       id='credit'
+                       name='credit'
+                       class='form-control'
+                       type='number'
+                       [(ngModel)]='currentInstance.credit' />
+                <label for="credit">Credit</label>
+            </div>
+            <!-- IsActive -->
+            <div class="form-check">
+                <input class="form-check-input"
+                       id="IsActive"
+                       name="IsActive"
+                       type="checkbox"
+                       value=""
+                       [(ngModel)]='currentInstance.isActive' />
+                <label class="form-check-label"
+                       for="IsActive">
+                    Is Active
+                </label>
+            </div>
+
+        </div>
+    </form>
+    <edit-buttons actions
+                  (onSave)='Save(courseEditUI)'
+                  (onCancle)='onClose(false)'>
+    </edit-buttons>
+</app-modal>

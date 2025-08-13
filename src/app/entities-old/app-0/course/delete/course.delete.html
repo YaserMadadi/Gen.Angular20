@@ -1,0 +1,21 @@
+<!-- Delete Form of [App].[Course] -->
+
+<app-modal #deleteModal
+           [(Visible)]="modalVisible"
+           [Header]='header("Course")'
+           (onClosed)='onClosed.emit(false)'>
+    <form #courseDeleteUI='ngForm'
+          (ngSubmit)='onDelete(courseDeleteUI)'>
+        <div class="container">
+
+            <presenter [name]='"title"'
+                       [title]="'title : '"
+                       [value]="currentInstance.title" />
+
+        </div>
+    </form>
+    <delete-buttons actions
+                    (onDelete)='onDelete(courseDeleteUI)'
+                    (onCancle)='onClose(false)'>
+    </delete-buttons>
+</app-modal>

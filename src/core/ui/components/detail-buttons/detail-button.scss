@@ -1,0 +1,13 @@
+.refresh-btn {
+
+  background-color: inherit;
+
+  &:hover {
+    color: #f9b90d;
+  }
+
+  &:active {
+    color: red;
+    border: 1px solid transparent;
+  }
+}

@@ -12,32 +12,20 @@ import { MessageController } from '../../../../core/tools/controller.message';
 import { MessageType } from '../../../../core/tools/enum';
 
 import { Gender } from './gender';
-import { GenderServiceCollection } from './gender.service.collection';
+import { GenderBuilder } from './gender.builder';
 
 
 
 @Injectable({ providedIn: 'root' })
 export class GenderService extends Service<Gender> implements IService<Gender> {
 
-  constructor() {
-    super(Gender.Info);
+  constructor(){
+    super(Gender.Info, inject(GenderBuilder));
   }
+
+  
 
   //#region     Abstract Members - Start.
-  override CreateInstance(id: number = 0): Gender {
-    return new Gender();
-  }
-
-  static CreateSeekInstance(): Gender {
-    return Gender.SeekInstance();
-  }
-
-  override CreateSeekInstance(): Gender {
-    return Gender.SeekInstance();
-  }
-
-
-
 
   //#region Methods
 
@@ -73,7 +61,7 @@ export class GenderService extends Service<Gender> implements IService<Gender> {
     return super.Delete(gender);
   }
 
-  override Seek(gender: Gender = Gender.SeekInstance(), pageNumber: number = 1): Observable<Gender[]> {
+  override Seek(gender: Gender = this.builder.BuildSeekInstance(), pageNumber: number = 1): Observable<Gender[]> {
     return super.Seek(gender); // TODO: find an integrated solution for pageNumber
   }
 
@@ -85,7 +73,7 @@ export class GenderService extends Service<Gender> implements IService<Gender> {
     return super.SeekByValue(value);
   }
 
-  //#endregion
+	//#endregion
 
   ////TODO: Load current factory Child based on id !
 

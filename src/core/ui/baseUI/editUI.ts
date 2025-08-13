@@ -1,24 +1,38 @@
 import { Service } from "../../service/service";
 import { BaseEntity } from "../../BaseEntity";
-import { ChangeDetectorRef, EventEmitter, Inject, Injectable, Input, OnInit, Output, SimpleChanges, ViewChild, signal } from "@angular/core";
+import { ChangeDetectorRef, Directive, EventEmitter, Inject, Injectable, Input, OnInit, Output, SimpleChanges, ViewChild, inject, signal } from "@angular/core";
 import { AppModalComponent } from "../modal/modal.component";
 import { firstValueFrom, Observable } from "rxjs";
 import { NgForm } from "@angular/forms";
 import { IEditUI } from "./editUI.interface";
 
-@Injectable()
-export class EditUI<T extends BaseEntity> implements IEditUI<T> {
+@Directive()
+export class EditUI<T extends BaseEntity> implements IEditUI<T>, OnInit {
+
+    @ViewChild('modal', { static: false })
+    editModal!: AppModalComponent;
 
     public modalVisible: boolean = false;
 
-    onClosed: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() public onClosed: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-    public currentInstance: T;
+    private _currentInstance!: T;
 
-    public modal!: AppModalComponent;
+    @Input()
+    public set currentInstance(value: T) {
+        this._currentInstance = value ?? this.service.builder.BuildInstance();
+        console.log('Current Instance in editUI:', this._currentInstance);
+    }
+
+    public get currentInstance(): T {
+        return this._currentInstance;
+    }
 
     constructor(protected service: Service<T>) { // protected currentInstance: T = service.CreateInstance()
-        this.currentInstance = service.CreateInstance();
+        this.currentInstance = service.builder.BuildInstance();
+    }
+
+    ngOnInit(): void {
     }
 
     closed(reloadRequired: boolean) {
@@ -29,7 +43,7 @@ export class EditUI<T extends BaseEntity> implements IEditUI<T> {
     // public currentInstance: T;
 
     header(entityName: string): string {
-        return `${entityName} Management - ${(this.currentInstance.id > 0 ? "Edit" : "Add")} ${entityName}`;
+        return `${entityName} Management - ${(this.currentInstance?.id > 0 ? "Edit" : "Add")} ${entityName}`;
     }
 
     VisibleChanged(value: boolean) {
@@ -61,30 +75,22 @@ export class EditUI<T extends BaseEntity> implements IEditUI<T> {
 
 
 
-    public initModal(modal: AppModalComponent) {
-        this.modal = modal;
-        //this.currentInstance = this.service.CreateInstance();
-    }
-
     async Show(): Promise<void>;
     async Show(instance: T): Promise<void>;
-    async Show(instance: T = this.service.CreateInstance()): Promise<void> {
-        this.currentInstance = instance;
-
-        this.modal.show();//.open();
-        // this.modal.Visible = true;
-        //this.cdr.detectChanges();
+    async Show(instance: T = this.service.builder.BuildInstance()): Promise<void> {
+        this.currentInstance = { ...instance };
+        this.editModal.show();//.open();
     }
 
     updateData(instance: T) {
-        this.currentInstance = instance ? instance : this.service.CreateInstance();
+        this.currentInstance = instance ? instance : this.service.builder.BuildInstance();
 
     }
 
     async onClose(succeded: boolean): Promise<void> {
         //this.modalVisible = false;
-        this.modal.Visible = false;
-        this.modal.hide();
+        this.editModal.Visible = false;
+        this.editModal.hide();
         this.onClosed.emit(succeded);
     }
 }

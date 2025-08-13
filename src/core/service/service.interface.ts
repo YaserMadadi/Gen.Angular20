@@ -12,11 +12,6 @@ export interface IService<T extends BaseEntity> {
 
     api_operation: API_Operation<T>;
 
-    CreateInstance(id: number): T;
-    CreateInstance(): T;
-
-    CreateSeekInstance(): T;
-
     Save(entity: T): Observable<T>;
 
     SaveCollection(listOfEntity: T[]): Observable<Result>;

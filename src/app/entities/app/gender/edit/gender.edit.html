@@ -9,29 +9,32 @@
           autocomplete='off'>
         <div class='form-margin'>
             <!-- Title -->
-        <div class="form-floating mb-3">
-            <input #title
+            <div class='form-floating mb-3'>
+                <input #title
+                   required
                    id='title'
                    name='title'
                    class='form-control'
                    type='text'
                    [(ngModel)]='currentInstance.title' />
-            <label for="title">Title</label>
-        </div> 
-			<!-- PreFix -->
-        <div class="form-floating mb-3">
-            <input #preFix
+                <label for='title'>عنوان</label>
+            </div> 
+				<!-- PreFix -->
+            <div class='form-floating mb-3'>
+                <input #preFix
+                   required
                    id='preFix'
                    name='preFix'
                    class='form-control'
                    type='text'
                    [(ngModel)]='currentInstance.preFix' />
-            <label for="preFix">Pre Fix</label>
-        </div> 
-			
+                <label for='preFix'>پیشوند</label>
+            </div> 
+				
         </div>
     </form>
     <edit-buttons actions
+                  [disabled]='!genderEditUI.valid'
                   (onSave)='Save(genderEditUI)'
                   (onCancle)='onClose(false)'>
     </edit-buttons>

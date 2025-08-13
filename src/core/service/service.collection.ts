@@ -9,16 +9,15 @@ import { catchError, map, Observable, of } from "rxjs";
 import { IServiceCollection } from "./service.collection.interface";
 import { IService } from "./service.interface";
 import { inject } from "@angular/core";
+import { ResultData } from "../tools/ResultData";
 
 export class ServiceCollection<T extends BaseEntity> implements IServiceCollection<T> {
 
-    public api_operation: API_Operation<T>;
+    public api_operation: API_Operation<T> = inject(API_Operation<T>);
 
-    public Service: IService<T>;
+    constructor(_api_operation: API_Operation<T>) {
+        this.api_operation = _api_operation;
 
-    constructor(service: IService<T>) {
-        this.api_operation = service.api_operation;
-        this.Service = service;
     }
 
     protected CollectionOf<U extends BaseEntity>(sourcEntity: T, collectionEntity: U, extendedPath?: string): Observable<U[]> {
@@ -27,10 +26,13 @@ export class ServiceCollection<T extends BaseEntity> implements IServiceCollecti
             //console.log(`Error in Collection Of ${targetInfo.fullName}..`, entity);
             return of([] as U[]);
         }
-
+        console.log('Im here!', collectionEntity);
         return this.api_operation.CollectionOf<U>(sourcEntity, collectionEntity, extendedPath)
             .pipe(
-                map(list => list),
+                map((result: ResultData<U[]>) => {
+                    console.table(result.data);
+                    return result.data;
+                }),
                 catchError(error => {
                     console.log(`Error in CollectionOf${collectionEntity.info.name} from ${sourcEntity.info.fullName}. Error : ${error}`);
                     this.errorHandler(error, 'بازیابی رکوردهای وابسته');

@@ -4,20 +4,23 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <strong>Student Course</strong>
+                    <strong>درسهای دانشجو</strong>
                 </div>
                 <div class="card-body">
                     <div class="container">
-                        <presenter-textbox [title]="'Student'">
+                        <presenter-textbox [title]="'دانشجــو'">
                             {{ currentInstance.student?.descriptor }}
                         </presenter-textbox>
-						<presenter-textbox [title]="'Course'">
+						<presenter-textbox [title]="'درس'">
                             {{ currentInstance.course?.descriptor }}
                         </presenter-textbox>
-						<presenter-textbox [title]="'Taken Date'">
+						<presenter-textbox [title]="'تاریخ انتخاب واحد'">
                             {{ currentInstance.takenDate | date:'fullDate' }}
                         </presenter-textbox>
                     </div>
+                </div>
+                <div class='card-footer'>
+                    <master-buttons (onRefreshClick)='onLoad()' />
                 </div>
                 <!-- // there is no detail tab -->
             </div>

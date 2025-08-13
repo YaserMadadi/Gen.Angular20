@@ -7,11 +7,15 @@
     <form #courseDeleteUI='ngForm'
           (ngSubmit)='onDelete(courseDeleteUI)'>
         <div class="container">
-
-            <presenter [name]='"title"'
-                       [title]="'title : '"
+            <presenter name='title'
+                       title='عنوان : '
                        [value]="currentInstance.title" />
-
+            <presenter [name]='"credit"'
+                       [title]="'واحد : '"
+                       [value]="currentInstance.credit | number" />
+            <presenter [name]='"isActive"'
+                       [title]="'وضعیت : '"
+                       [value]="currentInstance.isActive | isActive" />
         </div>
     </form>
     <delete-buttons actions

@@ -12,32 +12,20 @@ import { MessageController } from '../../../../core/tools/controller.message';
 import { MessageType } from '../../../../core/tools/enum';
 
 import { Course } from './course';
-import { CourseServiceCollection } from './course.service.collection';
+import { CourseBuilder } from './course.builder';
 
 
 
 @Injectable({ providedIn: 'root' })
 export class CourseService extends Service<Course> implements IService<Course> {
 
-  constructor() {
-    super(Course.Info);
+  constructor(){
+    super(Course.Info, inject(CourseBuilder));
   }
+
+  
 
   //#region     Abstract Members - Start.
-  override CreateInstance(id: number = 0): Course {
-    return new Course();
-  }
-
-  static CreateSeekInstance(): Course {
-    return Course.SeekInstance();
-  }
-
-  override CreateSeekInstance(): Course {
-    return Course.SeekInstance();
-  }
-
-
-
 
   //#region Methods
 
@@ -73,7 +61,7 @@ export class CourseService extends Service<Course> implements IService<Course> {
     return super.Delete(course);
   }
 
-  override Seek(course: Course = Course.SeekInstance(), pageNumber: number = 1): Observable<Course[]> {
+  override Seek(course: Course = this.builder.BuildSeekInstance(), pageNumber: number = 1): Observable<Course[]> {
     return super.Seek(course); // TODO: find an integrated solution for pageNumber
   }
 
@@ -85,7 +73,7 @@ export class CourseService extends Service<Course> implements IService<Course> {
     return super.SeekByValue(value);
   }
 
-  //#endregion
+	//#endregion
 
   ////TODO: Load current factory Child based on id !
 

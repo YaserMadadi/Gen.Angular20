@@ -24,7 +24,7 @@ export class Gender extends BaseEntity implements IBaseEntity<Gender> {
 
   //region Info
 
-  public static override readonly Info: Info = new Info('App', 'Gender', 'Gender');
+  public static override readonly Info: Info = new Info('App', 'Gender', 'جنسیت');
 
   //endregion
 
@@ -41,17 +41,6 @@ export class Gender extends BaseEntity implements IBaseEntity<Gender> {
   public listOfStudent: Student[] = [];
 
   //#endregion
-
-  
-  public SeekInstance(): Gender {
-    return Gender.SeekInstance();
-  }
-
-  public static override SeekInstance() : Gender {
-    let gender: Gender = new Gender();
-    // No Item...
-    return gender;
-  }
 
   public static Validate(gender: Gender) : boolean {
     let result = 

@@ -6,7 +6,7 @@ export interface IDeleteUI<T extends BaseEntity> {
 
     currentInstance: T;
 
-    initModal(modal: AppModalComponent): void;
+    //initModal(modal: AppModalComponent): void;
 
     Show(currentInstance: T): Promise<void>;
 

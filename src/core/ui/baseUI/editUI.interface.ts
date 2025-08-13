@@ -7,11 +7,11 @@ export interface IEditUI<T extends BaseEntity> {
     //currentInstance: T;
     //modalVisible: boolean;
 
-    modal: AppModalComponent;
+    editModal: AppModalComponent;
 
     header(entityName: string): string;
 
-    initModal(modal: AppModalComponent): void;
+    //initModal(modal: AppModalComponent): void;
 
     Show(): Promise<void>;
     Show(instance: T): Promise<void>;

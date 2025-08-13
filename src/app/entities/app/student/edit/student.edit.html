@@ -1,63 +1,67 @@
+
 <!-- Edit Form of [App].[Student] -->
 <app-modal #modal
            [(Visible)]='modalVisible'
            [Header]='header("Student")'
            (onClosed)='closed(false)'>
     <form #studentEditUI='ngForm'
-          (ngSubmit)='Save(studentEditUI)'
+          (ngSubmit)='Save(studentEditUI)' 
           autocomplete='off'>
         <div class='form-margin'>
-            <div class='mb-3'>
-                <lookup #gender
-                        id='gender'
-                        name='gender'
-                        [items]='genderLinker.list$ | async'
-                        [textField]='"title"'
-                        [valueField]='"id"'
-                        [label]='"جنسیت : "'
-                        (onSeek)='genderLinker.onSeek($event)'>
-                </lookup>
-            </div>
             <!-- FirstName -->
             <div class='form-floating mb-3'>
                 <input #firstName
-                       id='firstName'
-                       name='firstName'
-                       class='form-control'
-                       type='text'
-                       [(ngModel)]='currentInstance.firstName' />
-                <label for='firstName'>نام : </label>
-            </div>
-            <!-- LastName -->
+                   required
+                   id='firstName'
+                   name='firstName'
+                   class='form-control'
+                   type='text'
+                   [(ngModel)]='currentInstance.firstName' />
+                <label for='firstName'>نام</label>
+            </div> 
+				<!-- LastName -->
             <div class='form-floating mb-3'>
                 <input #lastName
-                       id='lastName'
-                       name='lastName'
-                       class='form-control'
-                       type='text'
-                       [(ngModel)]='currentInstance.lastName' />
-                <label for='lastName'>Last Name</label>
+                   required
+                   id='lastName'
+                   name='lastName'
+                   class='form-control'
+                   type='text'
+                   [(ngModel)]='currentInstance.lastName' />
+                <label for='lastName'>نام خانوادگی</label>
+            </div> 
+				<!-- جنسیت -->
+            <div class="mb-3">
+                <lookup #gender
+                        required
+                        name='gender'
+                        label='جنسیت : '
+                        [textField]="'descriptor'"
+                        [valueField]="'id'"
+                        [items]='genderLinker.list$ | async'
+                        [locked]='genderLinker.locked'
+                        [filterable]='genderLinker.filterable'
+                        [(ngModel)]='currentInstance.gender'
+                        [(selectedItem)]='currentInstance.gender'
+                        (onSeek)='genderLinker.onSeek($event)' >
+                </lookup>
             </div>
-            <!-- Gender -->
-            <!--  Lookup  -->
-            <!-- <lookup (onDoSerach)='DoSerach($event)'
-                    [Items$]='list$'></lookup> -->
-
-
-            <!-- Code -->
-            <!-- <div class='form-floating mb-3'>
+				<!-- Code -->
+            <div class='form-floating mb-3'>
                 <input #code
-                       id='code'
-                       name='code'
-                       class='form-control'
-                       type='number'
-                       [(ngModel)]='currentInstance.code' />
-                <label for='code'>Code</label>
-            </div> -->
-
+                   required
+                   id='code'
+                   name='code'
+                   class='form-control'
+                   type='number'
+                   [(ngModel)]='currentInstance.code' />
+                <label for='code'>کد دانشجویی</label>
+            </div> 
+				
         </div>
     </form>
     <edit-buttons actions
+                  [disabled]='!studentEditUI.valid'
                   (onSave)='Save(studentEditUI)'
                   (onCancle)='onClose(false)'>
     </edit-buttons>
