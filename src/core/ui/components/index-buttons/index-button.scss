@@ -1,0 +1,23 @@
+.refresh-btn {
+
+  background-color: #ffffff;
+
+  &:hover {
+    color: #f9b90d;
+  }
+
+  &:active {
+    color: red;
+    border: 1px solid transparent;
+  }
+
+  &:disabled {
+    border-color: transparent;
+  }
+}
+
+.icon:not(.icon-c-s):not(.icon-custom-size).icon-2xl {
+  width: 2rem;
+  height: 2rem;
+  font-size: 2rem;
+}
