@@ -20,6 +20,13 @@ button:active,
 button:focus:active {
     outline: none !important;
     box-shadow: none !important;
+    background-color: white;
+}
+
+.btn {
+    background-color: white;
+    color: #28292c;
+    border-radius: 2px;
 }
 
 .dropdown-toggle {
@@ -35,16 +42,16 @@ button:focus:active {
 .dropdown-panel {
     position: absolute;
     top: 100%;
-    min-height: 200px;
+    min-height: 20px;
     max-height: 300px;
     left: 0;
     width: 100%;
-    z-index: 1000;
     background: white;
     border: 1px solid #ccc;
-    max-height: 200px;
-    overflow-y: auto;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    z-index: 10000;
+    color: #28292c;
 }
 
 .filter-input {
@@ -104,14 +111,44 @@ button:focus:active {
 .lookup-item {
     padding: 6px 14px;
     border-bottom: 1px solid #eee;
+    font-weight: 100;
+    /* display: block;
+    width: 100%;
+    border: 0px;
+    background-color: white;
+    text-align: right; */
 }
 
+
+
 .lookup-item:hover {
-    background-color: #f13d3d;
+    background-color: #cf5454 !important;
     color: white;
 }
 
 .lookup-item-hover {
+    background-color: #cf5454 !important;
+    color: white;
+}
+
+.lookup-item-selected {
     background-color: #f13d3d;
     color: white;
+}
+
+.btn:disabled {
+    color: var(--cui-btn-disabled-color);
+    pointer-events: none;
+    background-color: var(--cui-btn-disabled-bg);
+    /* border-color: var(--cui-btn-disabled-border-color); */
+    opacity: 90%;
+    border: none;
+}
+
+::ng-deep .p-dialog-content {
+    overflow: visible !important;
+}
+
+::ng-deep .p-dialog {
+    overflow: visible !important;
 }

@@ -1,6 +1,7 @@
 <!--  Version 01 -->
 
-<div class="l-wrapper">
+<div [class.l-wrapper]='!locked'
+     #lookupWrapper>
     <label for="lookup-body"
            [style.display]="hasLabel() ? 'block' : 'none'"
            class="label">{{ label }}</label>
@@ -11,13 +12,15 @@
              class="lookup-selected-item-container lookup-wrapper">
             <button class="btn btn-default  d-flex justify-content-between align-items-center w-100"
                     type="button"
+                    [disabled]="locked"
                     (click)="toggleDropdown($event)">
                 <span class="me-auto">{{ displayText }}
-                    <span *ngIf="hasSelectedItem"
+                    <span *ngIf="hasSelectedItem && !locked"
                           class="clear-button ms-2"
                           (click)="clearSelection()">✕</span>
                 </span>
-                <i class="ms-2 bi bi-chevron-down"></i> <!-- Use your preferred icon here -->
+                <i *ngIf='!locked'
+                   class="ms-2 bi bi-chevron-down"></i> <!-- Use your preferred icon here -->
             </button>
         </div>
 
@@ -36,13 +39,19 @@
 
 
             @if (items && items.length > 0) {
-            <div class="lookup-list"
-                 (keydown)='onKeyDown($event)'>
-                @for (item of items; track item.id; let i = $index) {
+            <div class="lookup-list">
+                @for (item of items; track i; let i = $index) {
+                <!-- <button class="lookup-item"
+                        [class.lookup-item-hover]="highlightedIndex == i"
+                        (click)="onSelectItem(item)">
+                    {{ item[textField] }}
+                </button> -->
                 <div class="lookup-item"
-                     [class.lookup-item-hover]="highlightedIndex == i"
+                     [class.lookup-item-hover]="items[highlightedIndex]?.id == item.id"
+                     [class.lookup-item-selected]="selectedItem?.id == item.id"
                      (click)="onSelectItem(item)">
                     {{ item[textField] }}
+                    <p style="display: none;">{{ i }}</p>
                 </div>
                 }
             </div>

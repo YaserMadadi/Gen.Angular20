@@ -11,7 +11,10 @@ import {
     ElementRef,
     DoCheck,
     forwardRef,
-    SimpleChanges
+    SimpleChanges,
+    OnInit,
+    AfterViewInit,
+    HostListener
 } from '@angular/core';
 import {
     Subject,
@@ -46,7 +49,7 @@ import { Base } from 'primeng/base';
         CommonModule
     ]
 })
-export class LookupComponent implements ControlValueAccessor, Validator {
+export class LookupComponent implements ControlValueAccessor, Validator, AfterViewInit {
     private filterSubject = new Subject<string>();
 
     private selectedItemSubject = new Subject<BaseEntity | undefined>();
@@ -60,7 +63,7 @@ export class LookupComponent implements ControlValueAccessor, Validator {
                 //if (!v) this.items = []
             }),
             filter((v) => v.length >= 2),
-            distinctUntilChanged()
+            //distinctUntilChanged()
         ).subscribe(term => {
             this.onSeek.emit(term);
         });
@@ -78,6 +81,9 @@ export class LookupComponent implements ControlValueAccessor, Validator {
             // }
         });
     }
+    ngAfterViewInit(): void {
+        this.onInit.emit(true);
+    }
 
     onFilterInputChanged() {
         this.filterSubject.next(this.searchTerm);
@@ -93,6 +99,7 @@ export class LookupComponent implements ControlValueAccessor, Validator {
     @Input() label: string = '';
     @Input() required: boolean | string = false;
     @Input() filterable: boolean = false;
+    @Input() locked: boolean = false;
 
     public hasLabel(): boolean {
         return this.label.trim().length > 0;
@@ -102,6 +109,7 @@ export class LookupComponent implements ControlValueAccessor, Validator {
     private _selectedItem: any;
 
     @Input() set selectedItem(value: any) {
+        //this.highlightedIndex = (value === null) ? -1 : value[this.valueField];
         this._selectedItem = value;
         this.selectedItemSubject.next(value);
         if (!this.filterable) {
@@ -109,9 +117,12 @@ export class LookupComponent implements ControlValueAccessor, Validator {
         }
         if (value instanceof BaseEntity && value.id <= 0) {
             this.searchTerm = '';
-            this.items = [];
+            //this.items = [];
         } else {
-            this.items = [value];
+            // if (value)
+            //     this.items = [value];
+            // else
+            //     this.items = [];
         }
     }
 
@@ -123,7 +134,24 @@ export class LookupComponent implements ControlValueAccessor, Validator {
     //#endregion    twoway binding for SelectedItem
 
     @Output() onSeek = new EventEmitter<string>();
-    @Output() onOpen = new EventEmitter<boolean>();
+    @Output() onInit = new EventEmitter<boolean>();
+
+
+    @ViewChild('lookupWrapper') lookupWrapper!: ElementRef;
+
+    @HostListener('document:click', ['$event'])
+    onDocumentClick(event: MouseEvent) {
+        if (!this.lookupWrapper.nativeElement.contains(event.target)) {
+            this.closeDropdown(); // Clicked outside
+        }
+    }
+    // onFocusOut(event: FocusEvent) {
+    //     console.log('Focus out event:', event);
+    //     setTimeout(() => {
+    //         if (!this.filterable)
+    //             this.closeDropdown();
+    //     }, 2000);
+    // }
 
     //#region   required and [(ngModel)] validation
     // --- ControlValueAccessor ---
@@ -216,15 +244,23 @@ export class LookupComponent implements ControlValueAccessor, Validator {
 
     onKeyDown(event: KeyboardEvent) {
         console.log('Key down event:', event);
+        console.log('Highlighted index:', this.highlightedIndex);
         if (this.items == null || this.items.length === 0) return;
         switch (event.key) {
             case 'ArrowDown':
-                this.highlightedIndex = (this.highlightedIndex + 1) % this.items.length;
+                this.highlightedIndex += 1;
+                if (this.highlightedIndex >= this.items.length) {
+                    this.highlightedIndex = 0;
+                }
                 event.preventDefault();
                 break;
             case 'ArrowUp':
-                this.highlightedIndex =
-                    (this.highlightedIndex - 1 + this.items.length) % this.items.length;
+                this.highlightedIndex -= 1;
+                if (this.highlightedIndex < 0) {
+                    this.highlightedIndex = this.items.length - 1;
+                }
+                // this.highlightedIndex =
+                //     (this.highlightedIndex - 1 + this.items.length) % this.items.length;
                 event.preventDefault();
                 break;
             case 'Enter':
@@ -240,6 +276,7 @@ export class LookupComponent implements ControlValueAccessor, Validator {
 
     onSelectItem(item: any) {
         this.selectedItem = item;
+        this.highlightedIndex = -1;// this.items?.findIndex(it => it[this.valueField] === item[this.valueField])?.valueOf() ?? -1;
         this.showDropdown = false;
         this.searchTerm = '';
         this._onChange(this.selectedItem);
@@ -256,7 +293,7 @@ export class LookupComponent implements ControlValueAccessor, Validator {
         if (this.showDropdown) {
             this.searchTerm = '';
             this.focusInput();
-            this.onOpen.emit(true);
+            //this.onInit.emit(true);
             //this.onSeek.emit('');
         }
     }
@@ -266,9 +303,11 @@ export class LookupComponent implements ControlValueAccessor, Validator {
     }
 
     clearSelection() {
+        if (this.filterable) {
+            //this.items = [];
+        }
         this.searchTerm = '';
         this.selectedItem = null;
-        this.highlightedIndex = -1;
         this.closeDropdown();
     }
 
