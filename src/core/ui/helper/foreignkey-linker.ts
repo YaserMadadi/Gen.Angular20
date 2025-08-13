@@ -2,19 +2,32 @@ import { Observable, of } from "rxjs";
 import { BaseEntity } from "../../BaseEntity";
 import { Info } from "../../info";
 import { Service } from "../../service/service";
-import { Injectable } from "@angular/core";
+import { Injectable, OnInit } from "@angular/core";
 
 
 export class ForeignkeyLinker<T extends BaseEntity> {
 
-    constructor(service: Service<T>, filterable: boolean = true) {
+    constructor(service: Service<T>, filterable: boolean = true, locked: boolean = false) {
         this.service = service;
         this.filterable = filterable;
         this.info = service.info;
-        this._instance = service.CreateInstance();
-        if (filterable) {
+        this._instance = service.builder.BuildInstance();
+        this.LoadList();
+        this.locked = locked;
+    }
+
+    private initialized: boolean = false;
+
+    onInit(value: boolean) {
+
+        if (this.initialized)
+            return;
+
+        if (!this.filterable) {
             this.LoadList();
         }
+
+        this.initialized = true;
     }
 
     private service: Service<T>;
@@ -34,7 +47,9 @@ export class ForeignkeyLinker<T extends BaseEntity> {
 
     public selectedItem!: T;
 
-    public filterable: boolean;
+    public filterable: boolean = true;
+
+    public locked: boolean = false;
 
     public list$: Observable<T[]> = new Observable<T[]>();
 
@@ -48,6 +63,7 @@ export class ForeignkeyLinker<T extends BaseEntity> {
     }
 
     public LoadList(): Observable<T[]> {
+        console.log('LoadList', this.info);
         this.list$ = this.service.RetrieveAll();
         return this.list$;
     }
