@@ -1,0 +1,10 @@
+<app-modal #modal
+           [(Visible)]='service.modalVisible'
+           [Header]='setHeader()'
+           (onClosed)='closed(false)'>
+  <div *ngIf='service.CurrentInstance'>
+    <p class='text-end'>Log Viewer for {{ service.CurrentInstance.info.schema }}.{{ service.CurrentInstance.info.name }}
+      with Id : {{ service.CurrentInstance.id }}
+    </p>
+  </div>
+</app-modal>
