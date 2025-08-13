@@ -9,6 +9,7 @@ import { CommonModule } from "@angular/common";
 @Component({
     selector: 'row-buttons',
     templateUrl: './row-buttons.html',
+    styleUrl: 'row-buttons.scss',
     imports: [
         RouterModule,
         CommonModule
@@ -32,7 +33,9 @@ export class RowButtons {
 
     @Input() editButtonText: string = 'ویرایش';
     @Input() deleteButtonText: string = 'حذف';
-    @Input() detailButtonText: string = '...';
+    @Input() detailButtonText: string = 'جزییات';
+
+    @Input() show: boolean = true;
 
     @Input() route: string = '';
     @Input() id: number = 0;
