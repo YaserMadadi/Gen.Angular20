@@ -11,7 +11,7 @@ export class Presenter {
 
     @Input() title: string = 'عنوان';
 
-    @Input() value: string = '';
+    @Input() value: string | number | Date | undefined | null = '';
 
 
 
