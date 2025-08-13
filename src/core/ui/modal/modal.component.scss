@@ -1,3 +1,7 @@
 :host ::ng-deep p-divider {
     --p-divider-border-color: #a7d3b3;
 }
+
+.body-content {
+    overflow-y: visible !important;
+}

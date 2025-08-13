@@ -1,7 +1,8 @@
-import { Component, Input, ElementRef, Output, EventEmitter, inject, computed } from '@angular/core';
+import { Component, Input, ElementRef, Output, EventEmitter, inject, computed, Injectable } from '@angular/core';
 import * as bootstrap from 'bootstrap';
 import { Button } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+
 import { DividerModule } from 'primeng/divider';
 
 @Component({
