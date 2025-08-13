@@ -1,0 +1,29 @@
+<div class='dropdown'>
+  <button class='dropdown-toggle2 btn btn-outline-default'
+          (click)='toggleMenu()'
+          [disabled]='disabled'
+          (blur)="closeDropdown()">
+    <svg [cIcon]='icon'
+         size='2xl'></svg>
+  </button>
+
+
+  <ul class='dropdown-menu'
+      *ngIf='isOpen'>
+    @if(items.length > 0){
+    <li *ngFor='let item of items'
+        class='dropdown-menu-item'
+        (click)='item.action("")'>
+      <!-- <li *ngFor='let item of items'
+    (click)='item.action()'> -->
+      <i *ngIf='item.icon'
+         class='{{ item.icon }}'></i>
+      {{ item.label }}
+    </li>
+    } @else {
+    <li class="disabled">
+      <p>آیتمی برای نمایش وجود ندارد</p>
+    </li>
+    }
+  </ul>
+</div>
